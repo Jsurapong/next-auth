@@ -6,6 +6,7 @@ interface RequestBody {
   name: string;
   email: string;
   password: string;
+  type: number;
 }
 
 export async function POST(request: Request) {
@@ -16,6 +17,7 @@ export async function POST(request: Request) {
       name: body.name,
       email: body.email,
       password: await bcrypt.hash(body.password, 10),
+      type: +body.type,
     },
   });
 
