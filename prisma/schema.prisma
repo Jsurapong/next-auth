@@ -29,12 +29,14 @@ model User {
   info     String?
   room     Room?   @relation(fields: [roomId], references: [id])
   roomId   Int?
+  deleted  Boolean @default(false)
 }
 
 model Department {
-  id   Int    @id @default(autoincrement())
-  name String
-  Room Room[]
+  id      Int     @id @default(autoincrement())
+  name    String
+  Room    Room[]
+  deleted Boolean @default(false)
 }
 
 model Room {
@@ -46,4 +48,5 @@ model Room {
   departmentId Int
   date         DateTime
   term         Int // 1 2 3 4 
+  deleted      Boolean    @default(false)
 }
