@@ -1,6 +1,4 @@
 import prisma from "@/lib/prisma";
-import { exclude } from "@/lib/exclude";
-import * as bcrypt from "bcrypt";
 import { verifyApi, response } from "@/lib/api";
 
 export async function GET(
@@ -10,12 +8,11 @@ export async function GET(
   verifyApi(request); // use middleware
 
   try {
-    const user = await prisma.user.findFirst({
+    const department = await prisma.department.findFirst({
       where: { id: +params.id }, // convert string to number add "+" prefix "params.id"
     });
 
-    const userWithoutPassword = exclude(user!, ["password"]);
-    return new Response(JSON.stringify(userWithoutPassword));
+    return new Response(JSON.stringify(department));
   } catch (error) {
     return response.error(JSON.stringify(error));
   }
@@ -28,35 +25,20 @@ export async function PUT(
   verifyApi(request); // use middleware
 
   type RequestBody = {
-    f_name: string;
-    l_name: string;
-    email: string;
-    password: string;
-    type: number;
-    info?: string;
-    roomId: number;
+    name: string;
   };
+
   try {
     const body: RequestBody = await request.json();
 
-    const user = await prisma.user.update({
+    const department = await prisma.department.update({
       where: { id: +params.id }, // convert string to number add "+" prefix "params.id"
       data: {
-        f_name: body?.f_name,
-        l_name: body?.l_name,
-        email: body?.email,
-        password: body?.password
-          ? await bcrypt.hash(body.password, 10)
-          : undefined,
-        type: body?.type ?? undefined,
-        info: body?.info,
-        roomId: body?.roomId ?? undefined,
+        name: body?.name,
       },
     });
 
-    const userWithoutPassword = exclude(user!, ["password"]);
-
-    return response.put(JSON.stringify(userWithoutPassword));
+    return response.put(JSON.stringify(department));
   } catch (error) {
     return response.error(JSON.stringify(error));
   }
@@ -69,7 +51,7 @@ export async function DELETE(
   verifyApi(request); // use middleware
 
   try {
-    const user = await prisma.user.delete({
+    const department = await prisma.department.delete({
       where: {
         id: +params.id,
       },
