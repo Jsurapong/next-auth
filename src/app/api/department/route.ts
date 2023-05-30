@@ -1,5 +1,4 @@
 import prisma from "@/lib/prisma";
-import * as bcrypt from "bcrypt";
 import { verifyApi, response } from "@/lib/api";
 
 export async function GET(request: Request, {}) {

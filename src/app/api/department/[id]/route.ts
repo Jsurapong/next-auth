@@ -1,6 +1,4 @@
 import prisma from "@/lib/prisma";
-import { exclude } from "@/lib/exclude";
-import * as bcrypt from "bcrypt";
 import { verifyApi, response } from "@/lib/api";
 
 export async function GET(
