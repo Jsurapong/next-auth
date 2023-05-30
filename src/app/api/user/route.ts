@@ -27,7 +27,7 @@ export async function GET(request: Request, {}) {
 }
 
 export async function POST(request: Request) {
-  verifyApi(request); // use middleware
+  // verifyApi(request); // use middleware
 
   type RequestBody = {
     id: number;
@@ -45,14 +45,14 @@ export async function POST(request: Request) {
 
     const user = await prisma.user.create({
       data: {
-        id: +body.id,
-        f_name: body.f_name,
-        l_name: body.l_name,
-        email: body.email,
+        id: +body?.id,
+        f_name: body?.f_name,
+        l_name: body?.l_name,
+        email: body?.email,
         password: await bcrypt.hash(body.password, 10),
-        type: +body.type,
+        type: body?.type ?? undefined,
         info: body?.info,
-        roomId: +body.roomId,
+        roomId: body?.roomId ?? undefined,
       },
     });
 
