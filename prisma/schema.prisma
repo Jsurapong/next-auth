@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -46,19 +46,25 @@ model Room {
 }
 
 model CheckRoom {
-  id      Int      @id @default(autoincrement())
-  date    DateTime
-  isPass  Boolean  @default(false)
-  room    Room     @relation(fields: [roomId], references: [id])
-  roomId  Int
-  time    Int
-  deleted Boolean  @default(false)
+  id           Int            @id @default(autoincrement())
+  date         DateTime
+  isPass       Boolean        @default(false)
+  room         Room           @relation(fields: [roomId], references: [id])
+  roomId       Int
+  time         Int
+  term         Int // 1 2 3 4 
+  deleted      Boolean        @default(false)
+  checkStudent CheckStudent[]
 }
 
 model CheckStudent {
-  id      Int     @id @default(autoincrement())
-  user    User    @relation(fields: [userId], references: [id])
-  userId  Int
-  isPass  Boolean @default(false)
-  deleted Boolean @default(false)
+  id          Int        @id @default(autoincrement())
+  user        User       @relation(fields: [userId], references: [id])
+  userId      Int
+  isPass      Boolean    @default(false)
+  deleted     Boolean    @default(false)
+  checkRoom   CheckRoom? @relation(fields: [checkRoomId], references: [id], onDelete: Cascade)
+  checkRoomId Int?
+
+  @@unique([checkRoomId, userId])
 }

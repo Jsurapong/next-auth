@@ -4,7 +4,7 @@ interface SignOption {
   expiresIn?: string | number;
 }
 
-const DEFAULT_SIGN_OPTION: SignOption = { expiresIn: "1h" };
+const DEFAULT_SIGN_OPTION: SignOption = { expiresIn: "24h" };
 
 export function signJwtAccessToken(
   payload: JwtPayload,
