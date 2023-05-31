@@ -1,7 +1,10 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/authOptions";
 import { getServerSession } from "next-auth/next";
-
+import { redirect } from "next/navigation";
 import { GetServerSidePropsContext } from "next";
+import { notFound } from "next/navigation";
+
+import { Role } from "@/lib/types/role";
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerSession(context.req, context.res, authOptions);
@@ -9,7 +12,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   if (!session) {
     return {
       redirect: {
-        destination: "/hello",
+        destination: "/",
         permanent: false,
       },
     };
@@ -20,4 +23,16 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       session,
     },
   };
+}
+
+export async function authServer(type?: Role[]) {
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    redirect("/api/auth/signin");
+  }
+
+  if (type && !type.includes(session.user.type)) {
+    notFound();
+  }
 }
