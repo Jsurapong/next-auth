@@ -14,7 +14,7 @@ const AppBar = () => {
       >
         User Post Page
       </Link>
-      <SigninButton />
+      {/* <SigninButton /> */}
     </header>
   );
 };
