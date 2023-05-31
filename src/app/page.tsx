@@ -1,11 +1,8 @@
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/lib/authOptions";
-import { signIn } from "next-auth/react";
+import { authServer } from "@/lib/auth";
+import { Role } from "@/lib/types/role";
 
 export default async function Page() {
-  const session = await getServerSession(authOptions);
-
-  console.log("server render");
+  await authServer([Role.Admin, Role.Student, Role.TeacherL1, Role.TeacherL2]);
 
   return <pre>Index</pre>;
 }

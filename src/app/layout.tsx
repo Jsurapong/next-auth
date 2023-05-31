@@ -2,11 +2,7 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import "antd/dist/reset.css";
 
-import {
-  NextAuthProvider,
-  AntDProvider,
-  RootStyleRegistry,
-} from "../components/Provider";
+import { NextAuthProvider, RootStyleRegistry } from "../components/Provider";
 // import AppBar from "@/components/AppBar";
 import LayoutAdmin from "@/components/Layout/Admin";
 

@@ -8,13 +8,6 @@ import TopNav from "@/components/TopNav";
 
 const { Header, Content, Footer, Sider } = Layout;
 
-enum Role {
-  Admin = 1,
-  TeacherL1 = 2,
-  TeacherL2 = 3,
-  Student = 4,
-}
-
 const Menus = [
   {
     title: "Manage User",

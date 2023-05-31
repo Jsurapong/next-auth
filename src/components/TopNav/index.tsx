@@ -14,7 +14,14 @@ const TopNav: React.FC = () => {
       style={{ justifyContent: "end" }}
       items={[
         { label: "Profile " + session?.user.f_name, key: "profile" },
-        { label: "Sign-out", key: "sign-out", onClick: () => signOut() },
+        {
+          label: "Sign-out",
+          key: "sign-out",
+          onClick: () => {
+            signOut();
+            signIn();
+          },
+        },
       ]}
     />
   );
