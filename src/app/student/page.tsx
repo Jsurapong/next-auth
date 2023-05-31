@@ -4,5 +4,5 @@
 export default async function Page() {
   // const session = await getServerSession(authOptions);
 
-  return <pre>Index</pre>;
+  return <pre>student</pre>;
 }

@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Layout, Menu } from "antd";
+import { useRouter } from "next/navigation";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -36,6 +37,8 @@ const Menus = [
 ];
 
 const LayoutAdmin: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const router = useRouter();
+
   return (
     <Layout>
       <Sider
@@ -61,6 +64,7 @@ const LayoutAdmin: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           mode="inline"
           defaultSelectedKeys={["4"]}
           items={Menus.map((item) => ({ label: item.title, key: item.path }))}
+          onClick={(e) => router.push(e.key)}
         />
       </Sider>
       <Layout>
