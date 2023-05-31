@@ -4,6 +4,8 @@ import React from "react";
 import { Layout, Menu } from "antd";
 import { useRouter } from "next/navigation";
 
+import TopNav from "@/components/TopNav";
+
 const { Header, Content, Footer, Sider } = Layout;
 
 enum Role {
@@ -69,15 +71,7 @@ const LayoutAdmin: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       </Sider>
       <Layout>
         <Header>
-          <Menu
-            theme="dark"
-            mode="horizontal"
-            style={{ justifyContent: "end" }}
-            items={[
-              { label: "Profile", key: "profile" },
-              { label: "Sign-out", key: "sign-out" },
-            ]}
-          />
+          <TopNav />
         </Header>
         <Content style={{ margin: "24px 16px 0" }}>
           <div

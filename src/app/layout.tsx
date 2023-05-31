@@ -1,15 +1,14 @@
-import { Suspense } from "react";
-import Loading from "./loading";
-
 import "./globals.css";
 import { Inter } from "next/font/google";
 import "antd/dist/reset.css";
 
-import { NextAuthProvider } from "../components/Provider";
-import AppBar from "@/components/AppBar";
+import {
+  NextAuthProvider,
+  AntDProvider,
+  RootStyleRegistry,
+} from "../components/Provider";
+// import AppBar from "@/components/AppBar";
 import LayoutAdmin from "@/components/Layout/Admin";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Create Next App",
@@ -23,12 +22,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <NextAuthProvider>
-          <Suspense fallback={<Loading />}>
+      <body>
+        <RootStyleRegistry>
+          <NextAuthProvider>
             <LayoutAdmin>{children}</LayoutAdmin>
-          </Suspense>
-        </NextAuthProvider>
+          </NextAuthProvider>
+        </RootStyleRegistry>
       </body>
     </html>
   );
