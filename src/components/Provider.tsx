@@ -7,6 +7,9 @@ import { createCache, extractStyle, StyleProvider } from "@ant-design/cssinjs";
 import { SessionProvider } from "next-auth/react";
 import { ConfigProvider } from "antd";
 
+import store from "@/store";
+import { Provider } from "react-redux";
+
 type Props = {
   children?: React.ReactNode;
 };
@@ -32,5 +35,11 @@ export const RootStyleRegistry = ({ children }: PropsWithChildren) => {
     );
   });
 
+  if (typeof window !== "undefined") return <>{children}</>;
+
   return <StyleProvider cache={cache}>{children}</StyleProvider>;
+};
+
+export const StoreProvider = ({ children }: Props) => {
+  return <Provider store={store}>{children}</Provider>;
 };

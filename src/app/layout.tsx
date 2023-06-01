@@ -1,8 +1,12 @@
 import "./globals.css";
-import { Inter } from "next/font/google";
+// import { Inter } from "next/font/google";
 import "antd/dist/reset.css";
 
-import { NextAuthProvider, RootStyleRegistry } from "../components/Provider";
+import {
+  NextAuthProvider,
+  RootStyleRegistry,
+  StoreProvider,
+} from "../components/Provider";
 // import AppBar from "@/components/AppBar";
 import LayoutAdmin from "@/components/Layout/Admin";
 
@@ -21,7 +25,9 @@ export default function RootLayout({
       <body>
         <RootStyleRegistry>
           <NextAuthProvider>
-            <LayoutAdmin>{children}</LayoutAdmin>
+            <StoreProvider>
+              <LayoutAdmin>{children}</LayoutAdmin>
+            </StoreProvider>
           </NextAuthProvider>
         </RootStyleRegistry>
       </body>
