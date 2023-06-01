@@ -10,6 +10,17 @@ export type ReturnUser = ThenArg<ReturnType<typeof user.getById>>;
 export type ReturnUserCreate = ThenArg<ReturnType<typeof user.create>>;
 export type ReturnUserUpdate = ThenArg<ReturnType<typeof user.update>>;
 export type ReturnUserDelete = ThenArg<ReturnType<typeof user.remove>>;
+export type RequestBodyCreate = {
+  id: number;
+  f_name: string;
+  l_name: string;
+  email: string;
+  password: string;
+  type: number;
+  info?: string;
+  roomId: number;
+};
+export type RequestBodyUpdate = Omit<RequestBodyCreate, "id">;
 
 // ============= Action Prisma ==================
 
@@ -21,8 +32,9 @@ const select_include: Prisma.UserArgs = {
     l_name: true,
     password: false,
     type: true,
-    info: true,
+    info: false,
     roomId: true,
+    deleted: false,
   },
 };
 
@@ -42,18 +54,7 @@ async function getById(id: number) {
 }
 
 async function create(request: Request) {
-  type RequestBody = {
-    id: number;
-    f_name: string;
-    l_name: string;
-    email: string;
-    password: string;
-    type: number;
-    info?: string;
-    roomId: number;
-  };
-
-  const body: RequestBody = await request.json();
+  const body: RequestBodyCreate = await request.json();
 
   const user = await prisma.user.create({
     data: {
@@ -73,17 +74,7 @@ async function create(request: Request) {
 }
 
 async function update(request: Request, id: number) {
-  type RequestBody = {
-    f_name: string;
-    l_name: string;
-    email: string;
-    password: string;
-    type: number;
-    info?: string;
-    roomId: number;
-  };
-
-  const body: RequestBody = await request.json();
+  const body: RequestBodyUpdate = await request.json();
 
   const user = await prisma.user.update({
     where: { id: +id }, // convert string to number add "+" prefix "params.id"

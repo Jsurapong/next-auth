@@ -1,7 +1,8 @@
 "use client";
 
 import React from "react";
-import { Space, Table } from "antd";
+import Link from "next/link";
+import { Space, Table, Card } from "antd";
 import type { ColumnsType } from "antd/es/table";
 
 import { useGetUserQuery, useDeleteUserMutation } from "@/app/user/service";
@@ -18,7 +19,24 @@ const UserTable: React.FC = () => {
     deleteUser(id);
   };
 
-  const columns: ColumnsType<DataType> = [
+  return (
+    <Card extra={<Link href={"/user/form"}>Add</Link>}>
+      <Table
+        loading={isFetching}
+        columns={makeColumns(handleDelete)}
+        rowKey={"id"}
+        dataSource={data}
+      />
+    </Card>
+  );
+};
+
+export default UserTable;
+
+function makeColumns(
+  handleDelete: (id: number) => void
+): ColumnsType<DataType> {
+  return [
     {
       title: "First Name",
       dataIndex: "f_name",
@@ -50,21 +68,10 @@ const UserTable: React.FC = () => {
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <a>Invite</a>
+          <Link href={`/user/form/${record.id}`}>Update</Link>
           <a onClick={() => handleDelete(record.id)}>Delete</a>
         </Space>
       ),
     },
   ];
-
-  return (
-    <Table
-      loading={isFetching}
-      columns={columns}
-      rowKey={"id"}
-      dataSource={data}
-    />
-  );
-};
-
-export default UserTable;
+}
