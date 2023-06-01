@@ -2,6 +2,17 @@ import { Prisma } from "@prisma/client";
 import prisma from "@/lib/prisma";
 import * as bcrypt from "bcrypt";
 
+export const user = { get, getById, create, update, remove };
+
+type ThenArg<T> = T extends PromiseLike<infer U> ? U : T;
+export type ReturnUsers = ThenArg<ReturnType<typeof user.get>>;
+export type ReturnUser = ThenArg<ReturnType<typeof user.getById>>;
+export type ReturnUserCreate = ThenArg<ReturnType<typeof user.create>>;
+export type ReturnUserUpdate = ThenArg<ReturnType<typeof user.update>>;
+export type ReturnUserDelete = ThenArg<ReturnType<typeof user.remove>>;
+
+// ============= Action Prisma ==================
+
 const select_include: Prisma.UserArgs = {
   select: {
     id: true,
@@ -15,14 +26,14 @@ const select_include: Prisma.UserArgs = {
   },
 };
 
-export async function get() {
+async function get() {
   const users = await prisma.user.findMany({
     ...select_include,
   });
   return users;
 }
 
-export async function getById(id: number) {
+async function getById(id: number) {
   const users = await prisma.user.findFirst({
     where: { id: +id },
     ...select_include,
@@ -30,7 +41,7 @@ export async function getById(id: number) {
   return users;
 }
 
-export async function create(request: Request) {
+async function create(request: Request) {
   type RequestBody = {
     id: number;
     f_name: string;
@@ -61,7 +72,7 @@ export async function create(request: Request) {
   return user;
 }
 
-export async function update(request: Request, id: number) {
+async function update(request: Request, id: number) {
   type RequestBody = {
     f_name: string;
     l_name: string;
@@ -93,7 +104,7 @@ export async function update(request: Request, id: number) {
   return user;
 }
 
-export async function deleteUser(id: number) {
+async function remove(id: number) {
   const user = await prisma.user.delete({
     where: { id: +id },
     ...select_include,
@@ -101,10 +112,3 @@ export async function deleteUser(id: number) {
 
   return user;
 }
-
-type ThenArg<T> = T extends PromiseLike<infer U> ? U : T;
-export type ReturnUsers = ThenArg<ReturnType<typeof get>>;
-export type ReturnUser = ThenArg<ReturnType<typeof getById>>;
-export type ReturnUserCreate = ThenArg<ReturnType<typeof create>>;
-export type ReturnUserUpdate = ThenArg<ReturnType<typeof update>>;
-export type ReturnUserDelete = ThenArg<ReturnType<typeof deleteUser>>;

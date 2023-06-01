@@ -5,14 +5,9 @@ import { Space, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 
 import { useGetUserQuery, useDeleteUserMutation } from "@/app/user/service";
+import type { ReturnUsers } from "@/app/api/user/controller";
 
-interface DataType {
-  id: number;
-  f_name: string;
-  l_name: number;
-  email: string;
-  type: string[];
-}
+type DataType = ReturnUsers[number];
 
 const UserTable: React.FC = () => {
   const { data, isFetching } = useGetUserQuery({});

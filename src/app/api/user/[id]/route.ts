@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma";
 import { verifyApi, response } from "@/lib/api";
 
-import { getById, update, deleteUser } from "@/app/api/user/controller";
+import { user } from "@/app/api/user/controller";
 
 export async function GET(
   request: Request,
@@ -10,9 +10,9 @@ export async function GET(
   verifyApi(request); // use middleware
 
   try {
-    const user = await getById(params.id);
+    const result = await user.getById(params.id);
 
-    return new Response(JSON.stringify(user));
+    return new Response(JSON.stringify(result));
   } catch (error) {
     return response.error(JSON.stringify(error));
   }
@@ -25,9 +25,9 @@ export async function PUT(
   verifyApi(request); // use middleware
 
   try {
-    const user = await update(request, params.id);
+    const result = await user.update(request, params.id);
 
-    return response.put(JSON.stringify(user));
+    return response.put(JSON.stringify(result));
   } catch (error) {
     return response.error(JSON.stringify(error));
   }
@@ -40,9 +40,9 @@ export async function DELETE(
   verifyApi(request); // use middleware
 
   try {
-    const user = await deleteUser(params.id);
+    const result = await user.remove(params.id);
 
-    return response.delete(JSON.stringify(user));
+    return response.delete(JSON.stringify(result));
   } catch (error) {
     return response.error(JSON.stringify(error));
   }
