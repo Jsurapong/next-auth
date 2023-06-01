@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma";
-import { exclude } from "@/lib/exclude";
-import * as bcrypt from "bcrypt";
 import { verifyApi, response } from "@/lib/api";
+
+import { user } from "@/app/api/user/controller";
 
 export async function GET(
   request: Request,
@@ -10,12 +10,9 @@ export async function GET(
   verifyApi(request); // use middleware
 
   try {
-    const user = await prisma.user.findFirst({
-      where: { id: +params.id }, // convert string to number add "+" prefix "params.id"
-    });
+    const result = await user.getById(params.id);
 
-    const userWithoutPassword = exclude(user!, ["password"]);
-    return new Response(JSON.stringify(userWithoutPassword));
+    return new Response(JSON.stringify(result));
   } catch (error) {
     return response.error(JSON.stringify(error));
   }
@@ -27,36 +24,10 @@ export async function PUT(
 ) {
   verifyApi(request); // use middleware
 
-  type RequestBody = {
-    f_name: string;
-    l_name: string;
-    email: string;
-    password: string;
-    type: number;
-    info?: string;
-    roomId: number;
-  };
   try {
-    const body: RequestBody = await request.json();
+    const result = await user.update(request, params.id);
 
-    const user = await prisma.user.update({
-      where: { id: +params.id }, // convert string to number add "+" prefix "params.id"
-      data: {
-        f_name: body?.f_name,
-        l_name: body?.l_name,
-        email: body?.email,
-        password: body?.password
-          ? await bcrypt.hash(body.password, 10)
-          : undefined,
-        type: body?.type ?? undefined,
-        info: body?.info,
-        roomId: body?.roomId ?? undefined,
-      },
-    });
-
-    const userWithoutPassword = exclude(user!, ["password"]);
-
-    return response.put(JSON.stringify(userWithoutPassword));
+    return response.put(JSON.stringify(result));
   } catch (error) {
     return response.error(JSON.stringify(error));
   }
@@ -69,13 +40,9 @@ export async function DELETE(
   verifyApi(request); // use middleware
 
   try {
-    const user = await prisma.user.delete({
-      where: {
-        id: +params.id,
-      },
-    });
+    const result = await user.remove(params.id);
 
-    return response.delete(JSON.stringify({}));
+    return response.delete(JSON.stringify(result));
   } catch (error) {
     return response.error(JSON.stringify(error));
   }

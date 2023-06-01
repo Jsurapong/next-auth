@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
-import * as bcrypt from "bcrypt";
 import { verifyApi, response } from "@/lib/api";
+
+import { room } from "../controller";
 
 export async function GET(
   request: Request,
@@ -9,11 +10,9 @@ export async function GET(
   verifyApi(request); // use middleware
 
   try {
-    const room = await prisma.room.findFirst({
-      where: { id: +params.id }, // convert string to number add "+" prefix "params.id"
-    });
+    const result = await room.getById(+params.id);
 
-    return new Response(JSON.stringify(room));
+    return response.get(JSON.stringify(result));
   } catch (error) {
     return response.error(JSON.stringify(error));
   }
@@ -25,29 +24,10 @@ export async function PUT(
 ) {
   verifyApi(request); // use middleware
 
-  type RequestBody = {
-    name: string;
-    teacherId: number;
-    departmentId: number;
-    term: number;
-    date: string;
-  };
-
   try {
-    const body: RequestBody = await request.json();
+    const result = await room.update(request, +params.id);
 
-    const room = await prisma.room.update({
-      where: { id: +params.id }, // convert string to number add "+" prefix "params.id"
-      data: {
-        name: body?.name,
-        departmentId: body?.departmentId,
-        teacherId: body?.teacherId,
-        date: body?.date,
-        term: body?.term,
-      },
-    });
-
-    return response.put(JSON.stringify(room));
+    return response.put(JSON.stringify(result));
   } catch (error) {
     return response.error(JSON.stringify(error));
   }
@@ -60,11 +40,7 @@ export async function DELETE(
   verifyApi(request); // use middleware
 
   try {
-    const room = await prisma.room.delete({
-      where: {
-        id: +params.id,
-      },
-    });
+    const result = await room.remove(params.id);
 
     return response.delete(JSON.stringify({}));
   } catch (error) {
