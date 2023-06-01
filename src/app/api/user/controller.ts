@@ -24,7 +24,7 @@ export type RequestBodyUpdate = Omit<RequestBodyCreate, "id">;
 
 // ============= Action Prisma ==================
 
-const select_include: Prisma.UserArgs = {
+const select_include = Prisma.validator<Prisma.UserArgs>()({
   select: {
     id: true,
     email: true,
@@ -36,7 +36,7 @@ const select_include: Prisma.UserArgs = {
     roomId: true,
     deleted: false,
   },
-};
+});
 
 async function get() {
   const users = await prisma.user.findMany({

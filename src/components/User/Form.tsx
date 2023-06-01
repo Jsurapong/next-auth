@@ -4,6 +4,8 @@ import Link from "next/link";
 import React from "react";
 import { Button, Form, Input, Space, Card, Select, InputNumber } from "antd";
 
+import { useGetRoomQuery } from "@/app/user/service";
+
 const { Option } = Select;
 
 import { Role } from "@/lib/types/role";
@@ -50,6 +52,10 @@ const FormApp: React.FC<FormAppProps> = ({
     form.resetFields();
   };
 
+  const { data, isFetching: roomLoading } = useGetRoomQuery({});
+
+  console.log({ initialValues, data });
+
   return (
     <Card title={<Link href="/user">Back</Link>} loading={loading}>
       <Form
@@ -92,9 +98,14 @@ const FormApp: React.FC<FormAppProps> = ({
           <Input />
         </Form.Item>
         <Form.Item name="roomId" label="roomId">
-          <Select disabled={method === "update"}>
-            <Option value={1}>1</Option>
-          </Select>
+          <Select
+            disabled={method === "update"}
+            loading={roomLoading}
+            options={data?.map((item) => ({
+              label: `${item.department.name} ${item.name}`,
+              value: item.id,
+            }))}
+          ></Select>
         </Form.Item>
         <Form.Item name="type" label="Role" rules={[{ required: true }]}>
           <Select disabled={method === "update"}>

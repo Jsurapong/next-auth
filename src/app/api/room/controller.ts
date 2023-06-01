@@ -21,16 +21,19 @@ export type RequestBodyUpdate = RequestBodyCreate;
 
 // ============= Action Prisma ==================
 
-const select_include: Prisma.RoomArgs = {};
+const select_include = Prisma.validator<Prisma.RoomArgs>()({
+  include: { department: true },
+});
 
 async function get() {
-  const rooms = await prisma.room.findMany({});
+  const rooms = await prisma.room.findMany({ ...select_include });
   return rooms;
 }
 
 async function getById(id: number) {
   const room = await prisma.room.findFirst({
     where: { id: +id }, // convert string to number add "+" prefix "params.id"
+    ...select_include,
   });
   return room;
 }
@@ -46,6 +49,7 @@ async function create(request: Request) {
       date: body?.date,
       term: body?.term,
     },
+    ...select_include,
   });
 
   return result;
@@ -63,6 +67,7 @@ async function update(request: Request, id: number) {
       date: body?.date,
       term: body?.term,
     },
+    ...select_include,
   });
 
   return room;
@@ -71,6 +76,7 @@ async function update(request: Request, id: number) {
 async function remove(id: number) {
   const room = await prisma.room.delete({
     where: { id: +id },
+    ...select_include,
   });
 
   return room;

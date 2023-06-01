@@ -9,6 +9,8 @@ import type {
   RequestBodyUpdate,
 } from "@/app/api/user/controller";
 
+import type { ReturnRooms } from "@/app/api/room/controller";
+
 export const userApi = createApi({
   reducerPath: "user",
   baseQuery: appBaseQuery,
@@ -40,7 +42,7 @@ export const userApi = createApi({
       }),
       invalidatesTags: ["user"],
     }),
-    getRoom: builder.query<ReturnUsers, {}>({
+    getRoom: builder.query<ReturnRooms, {}>({
       query: () => ({ url: "/api/room", method: "GET" }),
       providesTags: ["users"],
     }),
@@ -53,4 +55,5 @@ export const {
   useCreateUserMutation,
   useUpdateUserMutation,
   useGetUserByIdQuery,
+  useGetRoomQuery,
 } = userApi;
