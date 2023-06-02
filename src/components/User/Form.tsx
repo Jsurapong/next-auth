@@ -85,16 +85,12 @@ const FormApp: React.FC<FormAppProps> = ({
         )}
         <Form.Item
           name="f_name"
-          label="Frist Name"
+          label="First Name"
           rules={[{ required: true }]}
         >
           <Input />
         </Form.Item>
-        <Form.Item
-          name="l_name"
-          label="Frist Name"
-          rules={[{ required: true }]}
-        >
+        <Form.Item name="l_name" label="Last Name" rules={[{ required: true }]}>
           <Input />
         </Form.Item>
         <Form.Item name="roomId" label="roomId">

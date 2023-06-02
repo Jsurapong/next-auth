@@ -26,6 +26,10 @@ const Menus = [
     path: "/check-list",
   },
   {
+    title: "Manage Department",
+    path: "/department",
+  },
+  {
     title: "Report",
     path: "/report",
   },

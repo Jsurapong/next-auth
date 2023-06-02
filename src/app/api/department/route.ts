@@ -1,13 +1,14 @@
-import prisma from "@/lib/prisma";
 import { verifyApi, response } from "@/lib/api";
+
+import { department } from "./controller";
 
 export async function GET(request: Request, {}) {
   verifyApi(request); // use middleware
 
   try {
-    const department = await prisma.department.findMany({});
+    const result = await department.get();
 
-    return response.get(JSON.stringify(department));
+    return response.get(JSON.stringify(result));
   } catch (error) {
     return response.error(JSON.stringify(error));
   }
@@ -16,18 +17,10 @@ export async function GET(request: Request, {}) {
 export async function POST(request: Request) {
   verifyApi(request); // use middleware
 
-  type RequestBody = {
-    name: string;
-  };
-
   try {
-    const body: RequestBody = await request.json();
+    const result = await department.create(request);
 
-    const department = await prisma.department.create({
-      data: { name: body?.name },
-    });
-
-    return response.post(JSON.stringify(department));
+    return response.post(JSON.stringify(result));
   } catch (error) {
     return response.error(JSON.stringify(error));
   }

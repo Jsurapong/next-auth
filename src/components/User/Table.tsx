@@ -19,6 +19,8 @@ const UserTable: React.FC = () => {
     deleteUser(id);
   };
 
+  console.log({ data });
+
   return (
     <Card extra={<Link href={"/user/form"}>Add</Link>}>
       <Table
@@ -38,6 +40,11 @@ function makeColumns(
 ): ColumnsType<DataType> {
   return [
     {
+      title: "ID",
+      dataIndex: "id",
+      key: "id",
+    },
+    {
       title: "First Name",
       dataIndex: "f_name",
       key: "f_name",
@@ -53,9 +60,9 @@ function makeColumns(
       key: "email",
     },
     {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
+      title: "Room",
+      dataIndex: "roomId",
+      key: "roomId",
     },
     {
       title: "Role",
