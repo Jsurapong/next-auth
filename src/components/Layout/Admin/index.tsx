@@ -14,13 +14,17 @@ const Menus = [
     path: "/user",
   },
   {
-    title: "Manage Teacher",
-    path: "/teacher",
+    title: "Manage Room",
+    path: "/room",
   },
-  {
-    title: "Student",
-    path: "/student",
-  },
+  // {
+  //   title: "Manage Teacher",
+  //   path: "/teacher",
+  // },
+  // {
+  //   title: "Student",
+  //   path: "/student",
+  // },
   {
     title: "Check List",
     path: "/check-list",

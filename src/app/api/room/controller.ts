@@ -1,6 +1,5 @@
 import { Prisma } from "@prisma/client";
 import prisma from "@/lib/prisma";
-import * as bcrypt from "bcrypt";
 
 export const room = { get, getById, create, update, remove };
 
@@ -15,7 +14,7 @@ export type RequestBodyCreate = {
   teacherId: number;
   departmentId: number;
   term: number;
-  date: string;
+  year: number;
 };
 export type RequestBodyUpdate = RequestBodyCreate;
 
@@ -35,6 +34,7 @@ async function getById(id: number) {
     where: { id: +id }, // convert string to number add "+" prefix "params.id"
     ...select_include,
   });
+
   return room;
 }
 
@@ -46,8 +46,9 @@ async function create(request: Request) {
       name: body?.name,
       departmentId: body?.departmentId,
       teacherId: body?.teacherId,
-      date: body?.date,
+      date: new Date(),
       term: body?.term,
+      year: body?.year,
     },
     ...select_include,
   });
@@ -64,8 +65,9 @@ async function update(request: Request, id: number) {
       name: body?.name,
       departmentId: body?.departmentId,
       teacherId: body?.teacherId,
-      date: body?.date,
+      date: new Date(),
       term: body?.term,
+      year: body?.year,
     },
     ...select_include,
   });
