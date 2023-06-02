@@ -15,13 +15,14 @@ export type RequestBodyCreate = {
   departmentId: number;
   term: number;
   year: number;
+  users: number[];
 };
 export type RequestBodyUpdate = RequestBodyCreate;
 
 // ============= Action Prisma ==================
 
 const select_include = Prisma.validator<Prisma.RoomArgs>()({
-  include: { department: true },
+  include: { department: true, user: true },
 });
 
 async function get() {
@@ -53,7 +54,21 @@ async function create(request: Request) {
     ...select_include,
   });
 
-  return result;
+  const roomId = result.id;
+
+  const updateUser = body?.users?.map(
+    async (id) =>
+      await prisma.user.update({
+        where: { id: id },
+        data: { roomId: roomId },
+      })
+  );
+
+  await Promise.all(updateUser);
+
+  const resultWithUsers = getById(roomId);
+
+  return resultWithUsers;
 }
 
 async function update(request: Request, id: number) {

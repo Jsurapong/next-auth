@@ -37,7 +37,7 @@ const FormApp: React.FC<FormAppProps> = ({
   const onFinish = async (values: Values) => {
     console.log(values);
     await handleSubmit(values);
-    form.resetFields();
+    method === "add" && form.resetFields();
   };
 
   return (

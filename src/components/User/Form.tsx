@@ -4,11 +4,7 @@ import Link from "next/link";
 import React from "react";
 import { Button, Form, Input, Space, Card, Select, InputNumber } from "antd";
 
-import { useGetRoomQuery } from "@/app/user/service";
-
-const { Option } = Select;
-
-import { Role } from "@/lib/types/role";
+import { roleOptions } from "./constants";
 
 const layout = {
   labelCol: { span: 8 },
@@ -49,12 +45,8 @@ const FormApp: React.FC<FormAppProps> = ({
   const onFinish = async (values: Values) => {
     console.log(values);
     await handleSubmit(values);
-    form.resetFields();
+    method === "add" && form.resetFields();
   };
-
-  const { data, isFetching: roomLoading } = useGetRoomQuery({});
-
-  console.log({ initialValues, data });
 
   return (
     <Card title={<Link href="/user">Back</Link>} loading={loading}>
@@ -93,23 +85,9 @@ const FormApp: React.FC<FormAppProps> = ({
         <Form.Item name="l_name" label="Last Name" rules={[{ required: true }]}>
           <Input />
         </Form.Item>
-        <Form.Item name="roomId" label="roomId">
-          <Select
-            disabled={method === "update"}
-            loading={roomLoading}
-            options={data?.map((item) => ({
-              label: `${item.department.name} ${item.name}`,
-              value: item.id,
-            }))}
-          ></Select>
-        </Form.Item>
+
         <Form.Item name="type" label="Role" rules={[{ required: true }]}>
-          <Select disabled={method === "update"}>
-            <Option value={Role.Admin}>Admin</Option>
-            <Option value={Role.TeacherL1}>TeacherL1</Option>
-            <Option value={Role.TeacherL2}>TeacherL2</Option>
-            <Option value={Role.Student}>Student</Option>
-          </Select>
+          <Select disabled={method === "update"} options={roleOptions}></Select>
         </Form.Item>
 
         <Form.Item {...tailLayout}>

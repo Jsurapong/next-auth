@@ -47,12 +47,33 @@ const FormApp: React.FC<FormAppProps> = ({
   const onFinish = async (values: Values) => {
     console.log(values);
     await handleSubmit(values);
-    form.resetFields();
+    method === "add" && form.resetFields();
   };
 
   const { data: departmentData, isFetching: departmentLoading } =
     useGetDepartmentQuery({});
   const { data: usersData, isFetching: userLoading } = useGetUserQuery({});
+
+  const departmentOptions = departmentData?.map((item) => ({
+    label: item.name,
+    value: item.id,
+  }));
+
+  const teacherOptions = usersData
+    ?.filter((item) => item.type === Role.TeacherL2)
+    ?.map((item) => ({
+      label: `${item.f_name} ${item.l_name}`,
+      value: item.id,
+    }));
+
+  console.log({ usersData });
+
+  const studentEmptyRoomOptions = usersData
+    ?.filter((item) => item.type === Role.Student && !item.roomId)
+    ?.map((item) => ({
+      label: `${item.f_name} ${item.l_name}`,
+      value: item.id,
+    }));
 
   return (
     <Card title={<Link href="/room">Back</Link>} loading={loading}>
@@ -71,27 +92,20 @@ const FormApp: React.FC<FormAppProps> = ({
           label="Teacher"
           rules={[{ required: true }]}
         >
-          <Select
-            loading={userLoading}
-            options={usersData
-              ?.filter((item) => item.type === Role.TeacherL2)
-              ?.map((item) => ({
-                label: `${item.f_name} ${item.l_name}`,
-                value: item.id,
-              }))}
-          />
+          <Select loading={userLoading} options={teacherOptions} />
         </Form.Item>
         <Form.Item
           name="departmentId"
           label="Department"
           rules={[{ required: true }]}
         >
+          <Select loading={departmentLoading} options={departmentOptions} />
+        </Form.Item>
+        <Form.Item name="users" label="นักเรียน" rules={[{ required: true }]}>
           <Select
+            mode="multiple"
             loading={departmentLoading}
-            options={departmentData?.map((item) => ({
-              label: item.name,
-              value: item.id,
-            }))}
+            options={studentEmptyRoomOptions}
           />
         </Form.Item>
         <Form.Item name="year" label="Year" rules={[{ required: true }]}>

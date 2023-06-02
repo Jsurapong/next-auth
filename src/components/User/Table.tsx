@@ -8,6 +8,8 @@ import type { ColumnsType } from "antd/es/table";
 import { useGetUserQuery, useDeleteUserMutation } from "@/app/user/service";
 import type { ReturnUsers } from "@/app/api/user/controller";
 
+import { roleOptions } from "./constants";
+
 type DataType = ReturnUsers[number];
 
 const UserTable: React.FC = () => {
@@ -18,8 +20,6 @@ const UserTable: React.FC = () => {
   const handleDelete = (id: number) => {
     deleteUser(id);
   };
-
-  console.log({ data });
 
   return (
     <Card extra={<Link href={"/user/form"}>Add</Link>}>
@@ -60,15 +60,11 @@ function makeColumns(
       key: "email",
     },
     {
-      title: "Room",
-      dataIndex: "roomId",
-      key: "roomId",
-    },
-    {
       title: "Role",
       dataIndex: "type",
       key: "type",
-      // render:
+      render: (value) =>
+        roleOptions?.find((item) => item.value === value)?.label,
     },
     {
       title: "Action",

@@ -42,7 +42,7 @@ export const departmentApi = createApi({
         data,
         method: "PUT",
       }),
-      invalidatesTags: ["department"],
+      invalidatesTags: ["department", "departments"],
     }),
   }),
 });

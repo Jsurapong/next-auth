@@ -39,7 +39,7 @@ export const roomApi = createApi({
         data,
         method: "PUT",
       }),
-      invalidatesTags: ["room"],
+      invalidatesTags: ["room", "rooms"],
     }),
   }),
 });
