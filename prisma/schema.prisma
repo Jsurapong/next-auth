@@ -40,6 +40,7 @@ model Room {
   departmentId Int
   date         DateTime
   term         Int // 1 2 3 4 
+  year         Int
   deleted      Boolean     @default(false)
   checkRoomId  Int?
   checkRoom    CheckRoom[]

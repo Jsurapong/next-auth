@@ -56,12 +56,12 @@ export async function POST(request: Request) {
         isPass: body?.isPass,
         roomId: body?.roomId,
         checkStudent: {
-          // createMany: {
-          //   data: body?.checkStudent?.map((item) => ({
-          //     userId: item.userId,
-          //     isPass: item.isPass,
-          //   })),
-          // },
+          createMany: {
+            data: body?.checkStudent?.map((item) => ({
+              userId: item.userId,
+              isPass: item.isPass,
+            })),
+          },
         },
       },
       include: {

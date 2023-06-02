@@ -1,6 +1,5 @@
 import { Prisma } from "@prisma/client";
 import prisma from "@/lib/prisma";
-import * as bcrypt from "bcrypt";
 
 export const room = { get, getById, create, update, remove };
 
@@ -15,14 +14,15 @@ export type RequestBodyCreate = {
   teacherId: number;
   departmentId: number;
   term: number;
-  date: string;
+  year: number;
+  users: number[];
 };
 export type RequestBodyUpdate = RequestBodyCreate;
 
 // ============= Action Prisma ==================
 
 const select_include = Prisma.validator<Prisma.RoomArgs>()({
-  include: { department: true },
+  include: { department: true, user: true },
 });
 
 async function get() {
@@ -35,6 +35,7 @@ async function getById(id: number) {
     where: { id: +id }, // convert string to number add "+" prefix "params.id"
     ...select_include,
   });
+
   return room;
 }
 
@@ -46,13 +47,28 @@ async function create(request: Request) {
       name: body?.name,
       departmentId: body?.departmentId,
       teacherId: body?.teacherId,
-      date: body?.date,
+      date: new Date(),
       term: body?.term,
+      year: body?.year,
     },
     ...select_include,
   });
 
-  return result;
+  const roomId = result.id;
+
+  const updateUser = body?.users?.map(
+    async (id) =>
+      await prisma.user.update({
+        where: { id: id },
+        data: { roomId: roomId },
+      })
+  );
+
+  await Promise.all(updateUser);
+
+  const resultWithUsers = getById(roomId);
+
+  return resultWithUsers;
 }
 
 async function update(request: Request, id: number) {
@@ -64,8 +80,9 @@ async function update(request: Request, id: number) {
       name: body?.name,
       departmentId: body?.departmentId,
       teacherId: body?.teacherId,
-      date: body?.date,
+      date: new Date(),
       term: body?.term,
+      year: body?.year,
     },
     ...select_include,
   });

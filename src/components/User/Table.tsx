@@ -8,6 +8,8 @@ import type { ColumnsType } from "antd/es/table";
 import { useGetUserQuery, useDeleteUserMutation } from "@/app/user/service";
 import type { ReturnUsers } from "@/app/api/user/controller";
 
+import { roleOptions } from "./constants";
+
 type DataType = ReturnUsers[number];
 
 const UserTable: React.FC = () => {
@@ -20,7 +22,10 @@ const UserTable: React.FC = () => {
   };
 
   return (
-    <Card extra={<Link href={"/user/form"}>Add</Link>}>
+    <Card
+      title="จัดการผู้ใช้งาน"
+      extra={<Link href={"/user/form"}>เพิ่ม</Link>}
+    >
       <Table
         loading={isFetching}
         columns={makeColumns(handleDelete)}
@@ -38,38 +43,39 @@ function makeColumns(
 ): ColumnsType<DataType> {
   return [
     {
-      title: "First Name",
+      title: "ไอดี",
+      dataIndex: "id",
+      key: "id",
+    },
+    {
+      title: "ชื่อ",
       dataIndex: "f_name",
       key: "f_name",
     },
     {
-      title: "Last Name",
+      title: "สกุล",
       dataIndex: "l_name",
       key: "l_name",
     },
     {
-      title: "Email",
+      title: "อีเมล",
       dataIndex: "email",
       key: "email",
     },
     {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
-    },
-    {
-      title: "Role",
+      title: "สิทธิ์",
       dataIndex: "type",
       key: "type",
-      // render:
+      render: (value) =>
+        roleOptions?.find((item) => item.value === value)?.label,
     },
     {
       title: "Action",
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <Link href={`/user/form/${record.id}`}>Update</Link>
-          <a onClick={() => handleDelete(record.id)}>Delete</a>
+          <Link href={`/user/form/${record.id}`}>แก้ไข</Link>
+          <a onClick={() => handleDelete(record.id)}>ลบ</a>
         </Space>
       ),
     },

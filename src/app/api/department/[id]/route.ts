@@ -1,5 +1,6 @@
-import prisma from "@/lib/prisma";
 import { verifyApi, response } from "@/lib/api";
+
+import { department } from "../controller";
 
 export async function GET(
   request: Request,
@@ -8,11 +9,9 @@ export async function GET(
   verifyApi(request); // use middleware
 
   try {
-    const department = await prisma.department.findFirst({
-      where: { id: +params.id }, // convert string to number add "+" prefix "params.id"
-    });
+    const result = await department.getById(+params.id);
 
-    return new Response(JSON.stringify(department));
+    return new Response(JSON.stringify(result));
   } catch (error) {
     return response.error(JSON.stringify(error));
   }
@@ -24,21 +23,10 @@ export async function PUT(
 ) {
   verifyApi(request); // use middleware
 
-  type RequestBody = {
-    name: string;
-  };
-
   try {
-    const body: RequestBody = await request.json();
+    const result = await department.update(request, params.id);
 
-    const department = await prisma.department.update({
-      where: { id: +params.id }, // convert string to number add "+" prefix "params.id"
-      data: {
-        name: body?.name,
-      },
-    });
-
-    return response.put(JSON.stringify(department));
+    return response.put(JSON.stringify(result));
   } catch (error) {
     return response.error(JSON.stringify(error));
   }
@@ -51,13 +39,9 @@ export async function DELETE(
   verifyApi(request); // use middleware
 
   try {
-    const department = await prisma.department.delete({
-      where: {
-        id: +params.id,
-      },
-    });
+    const result = await department.remove(+params.id);
 
-    return response.delete(JSON.stringify({}));
+    return response.delete(JSON.stringify(result));
   } catch (error) {
     return response.error(JSON.stringify(error));
   }
