@@ -25,6 +25,7 @@ export type Values = {
   departmentId: number;
   term: number;
   year: number;
+  users: number[];
 };
 
 type FormAppProps = {
@@ -47,12 +48,17 @@ const FormApp: React.FC<FormAppProps> = ({
   const onFinish = async (values: Values) => {
     console.log(values);
     await handleSubmit(values);
+    refetch();
     method === "add" && form.resetFields();
   };
 
   const { data: departmentData, isFetching: departmentLoading } =
     useGetDepartmentQuery({});
-  const { data: usersData, isFetching: userLoading } = useGetUserQuery({});
+  const {
+    data: usersData,
+    isFetching: userLoading,
+    refetch,
+  } = useGetUserQuery({}, { refetchOnMountOrArgChange: true });
 
   const departmentOptions = departmentData?.map((item) => ({
     label: item.name,
@@ -66,17 +72,19 @@ const FormApp: React.FC<FormAppProps> = ({
       value: item.id,
     }));
 
-  console.log({ usersData });
-
   const studentEmptyRoomOptions = usersData
-    ?.filter((item) => item.type === Role.Student && !item.roomId)
+    ?.filter(
+      (item) =>
+        (item.type === Role.Student && !item.roomId) ||
+        initialValues?.users?.includes(item.id)
+    )
     ?.map((item) => ({
       label: `${item.f_name} ${item.l_name}`,
       value: item.id,
     }));
 
   return (
-    <Card title={<Link href="/room">Back</Link>} loading={loading}>
+    <Card title={<Link href="/room">กลับ</Link>} loading={loading}>
       <Form
         {...layout}
         form={form}
@@ -84,19 +92,19 @@ const FormApp: React.FC<FormAppProps> = ({
         style={{ maxWidth: 600 }}
         initialValues={initialValues}
       >
-        <Form.Item name="name" label="Name" rules={[{ required: true }]}>
+        <Form.Item name="name" label="ชื่อ" rules={[{ required: true }]}>
           <Input />
         </Form.Item>
         <Form.Item
           name="teacherId"
-          label="Teacher"
+          label="ครูประจำชั้น"
           rules={[{ required: true }]}
         >
           <Select loading={userLoading} options={teacherOptions} />
         </Form.Item>
         <Form.Item
           name="departmentId"
-          label="Department"
+          label="แผนก"
           rules={[{ required: true }]}
         >
           <Select loading={departmentLoading} options={departmentOptions} />
@@ -108,16 +116,16 @@ const FormApp: React.FC<FormAppProps> = ({
             options={studentEmptyRoomOptions}
           />
         </Form.Item>
-        <Form.Item name="year" label="Year" rules={[{ required: true }]}>
+        <Form.Item name="year" label="ปีกาศีกษา" rules={[{ required: true }]}>
           <Select options={yearOption} />
         </Form.Item>
-        <Form.Item name="term" label="Term" rules={[{ required: true }]}>
+        <Form.Item name="term" label="เทอม" rules={[{ required: true }]}>
           <Select options={termOptions} />
         </Form.Item>
         <Form.Item {...tailLayout}>
           <Space>
             <Button type="primary" htmlType="submit" loading={submitting}>
-              Submit
+              บันทึก
             </Button>
           </Space>
         </Form.Item>

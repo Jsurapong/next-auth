@@ -33,7 +33,7 @@ const UserTable: React.FC = () => {
   };
 
   return (
-    <Card extra={<Link href={"/room/form"}>Add</Link>}>
+    <Card title="จัดการห้อง" extra={<Link href={"/room/form"}>เพิ่ม</Link>}>
       <Table
         loading={isFetching}
         columns={makeColumns(handleDelete, getTeacher)}
@@ -52,23 +52,23 @@ function makeColumns(
 ): ColumnsType<DataType> {
   return [
     {
-      title: "ID",
+      title: "ไอดี",
       dataIndex: "id",
       key: "id",
     },
     {
-      title: "Name",
+      title: "ชื่อห้อง",
       dataIndex: "name",
       key: "name",
     },
     {
-      title: "Teacher",
+      title: "ครูประจำชั้น",
       dataIndex: "teacherId",
       key: "teacherId",
       render: renderTeacher,
     },
     {
-      title: "Year",
+      title: "ปีการศึกษา",
       dataIndex: "year",
       key: "year",
       render: (value) => yearOption.find((item) => item.value === value)?.label,
@@ -78,8 +78,8 @@ function makeColumns(
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <Link href={`/room/form/${record.id}`}>Update</Link>
-          <a onClick={() => handleDelete(record.id)}>Delete</a>
+          <Link href={`/room/form/${record.id}`}>แก้ไข</Link>
+          <a onClick={() => handleDelete(record.id)}>ลบ</a>
         </Space>
       ),
     },

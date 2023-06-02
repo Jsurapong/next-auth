@@ -41,7 +41,7 @@ const FormApp: React.FC<FormAppProps> = ({
   };
 
   return (
-    <Card title={<Link href="/department">Back</Link>} loading={loading}>
+    <Card title={<Link href="/department">กลับ</Link>} loading={loading}>
       <Form
         {...layout}
         form={form}
@@ -49,14 +49,14 @@ const FormApp: React.FC<FormAppProps> = ({
         style={{ maxWidth: 600 }}
         initialValues={initialValues}
       >
-        <Form.Item name="name" label="Name" rules={[{ required: true }]}>
+        <Form.Item name="name" label="ชื่อแผนก" rules={[{ required: true }]}>
           <Input />
         </Form.Item>
 
         <Form.Item {...tailLayout}>
           <Space>
             <Button type="primary" htmlType="submit" loading={submitting}>
-              Submit
+              บันทึก
             </Button>
           </Space>
         </Form.Item>

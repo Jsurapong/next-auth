@@ -26,6 +26,7 @@ const FormCreate: React.FC = () => {
     departmentId: data?.departmentId,
     term: data?.term,
     year: data?.year,
+    users: data?.user?.map((item) => item.id),
   };
 
   return (

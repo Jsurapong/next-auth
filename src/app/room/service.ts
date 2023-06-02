@@ -25,6 +25,7 @@ export const roomApi = createApi({
     }),
     createRoom: builder.mutation<ReturnRoomCreate, RequestBodyCreate>({
       query: (data) => ({ url: "/api/room", data, method: "POST" }),
+      invalidatesTags: ["rooms"],
     }),
     getRoomById: builder.query<ReturnRoom, number>({
       query: (id) => ({ url: `/api/room/${id}`, method: "GET" }),

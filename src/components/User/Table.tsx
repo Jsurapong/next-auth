@@ -22,7 +22,10 @@ const UserTable: React.FC = () => {
   };
 
   return (
-    <Card extra={<Link href={"/user/form"}>Add</Link>}>
+    <Card
+      title="จัดการผู้ใช้งาน"
+      extra={<Link href={"/user/form"}>เพิ่ม</Link>}
+    >
       <Table
         loading={isFetching}
         columns={makeColumns(handleDelete)}
@@ -40,27 +43,27 @@ function makeColumns(
 ): ColumnsType<DataType> {
   return [
     {
-      title: "ID",
+      title: "ไอดี",
       dataIndex: "id",
       key: "id",
     },
     {
-      title: "First Name",
+      title: "ชื่อ",
       dataIndex: "f_name",
       key: "f_name",
     },
     {
-      title: "Last Name",
+      title: "สกุล",
       dataIndex: "l_name",
       key: "l_name",
     },
     {
-      title: "Email",
+      title: "อีเมล",
       dataIndex: "email",
       key: "email",
     },
     {
-      title: "Role",
+      title: "สิทธิ์",
       dataIndex: "type",
       key: "type",
       render: (value) =>
@@ -71,8 +74,8 @@ function makeColumns(
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <Link href={`/user/form/${record.id}`}>Update</Link>
-          <a onClick={() => handleDelete(record.id)}>Delete</a>
+          <Link href={`/user/form/${record.id}`}>แก้ไข</Link>
+          <a onClick={() => handleDelete(record.id)}>ลบ</a>
         </Space>
       ),
     },

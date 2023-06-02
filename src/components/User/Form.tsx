@@ -49,7 +49,7 @@ const FormApp: React.FC<FormAppProps> = ({
   };
 
   return (
-    <Card title={<Link href="/user">Back</Link>} loading={loading}>
+    <Card title={<Link href="/user">กลับ</Link>} loading={loading}>
       <Form
         {...layout}
         form={form}
@@ -57,43 +57,39 @@ const FormApp: React.FC<FormAppProps> = ({
         style={{ maxWidth: 600 }}
         initialValues={initialValues}
       >
-        <Form.Item name="id" label="Id" rules={[{ required: true }]}>
+        <Form.Item name="id" label="ไอดี" rules={[{ required: true }]}>
           <InputNumber
             style={{ width: "100%" }}
             disabled={method === "update"}
           />
         </Form.Item>
-        <Form.Item name="email" label="Email" rules={[{ required: true }]}>
+        <Form.Item name="email" label="อีเมล" rules={[{ type: "email" }]}>
           <Input />
         </Form.Item>
         {method === "add" && (
           <Form.Item
             name="password"
-            label="Password"
+            label="รหัสผ่าน"
             rules={[{ required: true }]}
           >
-            <Input />
+            <Input.Password />
           </Form.Item>
         )}
-        <Form.Item
-          name="f_name"
-          label="First Name"
-          rules={[{ required: true }]}
-        >
+        <Form.Item name="f_name" label="ชื่อ" rules={[{ required: true }]}>
           <Input />
         </Form.Item>
-        <Form.Item name="l_name" label="Last Name" rules={[{ required: true }]}>
+        <Form.Item name="l_name" label="สกุล" rules={[{ required: true }]}>
           <Input />
         </Form.Item>
 
-        <Form.Item name="type" label="Role" rules={[{ required: true }]}>
+        <Form.Item name="type" label="สิทธิ์" rules={[{ required: true }]}>
           <Select disabled={method === "update"} options={roleOptions}></Select>
         </Form.Item>
 
         <Form.Item {...tailLayout}>
           <Space>
             <Button type="primary" htmlType="submit" loading={submitting}>
-              Submit
+              บันทึก
             </Button>
           </Space>
         </Form.Item>

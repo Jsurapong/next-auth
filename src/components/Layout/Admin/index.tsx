@@ -10,33 +10,30 @@ const { Header, Content, Footer, Sider } = Layout;
 
 const Menus = [
   {
-    title: "Manage User",
+    title: "หน้าแรก",
+    path: "/",
+  },
+  {
+    title: "จัดการผู้ใช้งาน",
     path: "/user",
   },
   {
-    title: "Manage Room",
+    title: "จัดการห้อง",
     path: "/room",
   },
-  // {
-  //   title: "Manage Teacher",
-  //   path: "/teacher",
-  // },
-  // {
-  //   title: "Student",
-  //   path: "/student",
-  // },
+
   {
-    title: "Check List",
+    title: "เช็คชื่อรายห้อง",
     path: "/check-list",
   },
   {
-    title: "Manage Department",
+    title: "จัดการแผนก",
     path: "/department",
   },
-  {
-    title: "Report",
-    path: "/report",
-  },
+  // {
+  //   title: "Report",
+  //   path: "/report",
+  // },
 ];
 
 const LayoutAdmin: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -58,7 +55,7 @@ const LayoutAdmin: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           style={{
             height: "32px",
             margin: "16px",
-            background: "rgba(255,255,255,.2)",
+            // background: "rgba(255,255,255,.2)",
             borderRadius: "6px",
           }}
         />
@@ -85,7 +82,7 @@ const LayoutAdmin: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           </div>
         </Content>
         <Footer style={{ textAlign: "center" }}>
-          Ant Design ©2023 Created by Ant UED
+          ระบบตรวจสอบเครื่องแต่งการนักศึกษา
         </Footer>
       </Layout>
     </Layout>
