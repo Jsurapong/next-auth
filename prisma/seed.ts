@@ -1,4 +1,7 @@
 import { PrismaClient } from "@prisma/client";
+
+import * as bcrypt from "bcrypt";
+
 const prisma = new PrismaClient();
 
 const departments = [
@@ -66,7 +69,10 @@ async function main() {
   );
 
   const userSeeder = user.map(
-    async (item) => await prisma.user.create({ data: item })
+    async (item) =>
+      await prisma.user.create({
+        data: { ...item, password: await bcrypt.hash(item.password, 10) },
+      })
   );
 
   await Promise.all([...departmentSeeder, ...userSeeder]);

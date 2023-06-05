@@ -1,7 +1,11 @@
 import { Prisma } from "@prisma/client";
 import prisma from "@/lib/prisma";
 
+import { verifyJwt } from "@/lib/jwt";
+
 export const room = { get, getById, create, update, remove };
+
+import { Role } from "@/lib/types/role";
 
 type ThenArg<T> = T extends PromiseLike<infer U> ? U : T;
 export type ReturnRooms = ThenArg<ReturnType<typeof room.get>>;
@@ -25,8 +29,20 @@ const select_include = Prisma.validator<Prisma.RoomArgs>()({
   include: { department: true, user: true },
 });
 
-async function get() {
-  const rooms = await prisma.room.findMany({ ...select_include });
+async function get(request: Request) {
+  const accessToken = request.headers.get("authorization");
+
+  const jwtDecode = verifyJwt(accessToken!);
+
+  let where = {};
+  if (jwtDecode?.type === Role.TeacherL2) {
+    where = { teacherId: +jwtDecode?.id };
+  }
+
+  const rooms = await prisma.room.findMany({
+    where,
+    ...select_include,
+  });
   return rooms;
 }
 
@@ -71,11 +87,11 @@ async function create(request: Request) {
   return resultWithUsers;
 }
 
-async function update(request: Request, id: number) {
+async function update(request: Request, roomId: number) {
   const body: RequestBodyUpdate = await request.json();
 
-  const room = await prisma.room.update({
-    where: { id: +id }, // convert string to number add "+" prefix "params.id"
+  const result = await prisma.room.update({
+    where: { id: +roomId }, // convert string to number add "+" prefix "params.id"
     data: {
       name: body?.name,
       departmentId: body?.departmentId,
@@ -87,7 +103,27 @@ async function update(request: Request, id: number) {
     ...select_include,
   });
 
-  return room;
+  const clearRoomId = result?.user?.map(
+    async (item) =>
+      await prisma.user.update({
+        where: { id: item.id },
+        data: { roomId: null },
+      })
+  );
+
+  await Promise.all(clearRoomId);
+
+  const updateUser = body?.users?.map(
+    async (id) =>
+      await prisma.user.update({
+        where: { id: id },
+        data: { roomId: roomId },
+      })
+  );
+
+  await Promise.all(updateUser);
+
+  return result;
 }
 
 async function remove(id: number) {

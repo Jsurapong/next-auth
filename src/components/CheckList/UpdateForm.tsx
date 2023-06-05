@@ -7,34 +7,44 @@ import Form from "@/components/CheckList/Form";
 
 import type { Values } from "@/components/CheckList/Form";
 import {
-  useUpdateUserMutation,
-  useGetUserByIdQuery,
+  useUpdateCheckRoomMutation,
+  useGetCheckRoomByIdQuery,
 } from "@/app/check-list/service";
 
 const FormCreate: React.FC = () => {
   const params = useParams();
 
+  console.log({ params });
+
   const id = params?.id;
 
-  const { data, isFetching } = useGetUserByIdQuery(+id, { skip: !id });
+  const roomId = +params?.roomId;
+  const checkId = +params?.checkId;
 
-  const [update, { isLoading }] = useUpdateUserMutation();
+  const { data, isFetching } = useGetCheckRoomByIdQuery(+checkId, {
+    skip: !checkId,
+  });
+
+  const [update, { isLoading }] = useUpdateCheckRoomMutation();
 
   const handleSubmit = async (values: Values) => {
-    // await update(values);
+    await update({ ...values, roomId, id: checkId });
   };
 
   const initialValues = {
-    // email: data?.email,
-    // f_name: data?.f_name,
-    // id: data?.id,
-    // l_name: data?.l_name,
-    // roomId: data?.roomId ?? undefined,
-    // type: data?.type,
+    isPass: data?.isPass,
+    term: data?.term,
+    time: data?.time,
+    date: data?.date?.toString(),
+    checkStudent: data?.checkStudent?.map((item) => ({
+      userId: item?.user.id,
+      isPass: item?.isPass,
+    })),
   };
 
   return (
     <Form
+      roomId={roomId}
       handleSubmit={handleSubmit}
       submitting={isLoading}
       loading={isFetching}

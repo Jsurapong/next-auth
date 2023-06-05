@@ -2,33 +2,42 @@
 
 import React from "react";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { Space, Table, Card } from "antd";
 import type { ColumnsType } from "antd/es/table";
+import dayjs from "dayjs";
 
-import { useGetRoomQuery } from "@/app/room/service";
-import type { ReturnRooms } from "@/app/api/room/controller";
+import { useGetCheckRoomQuery } from "@/app/check-list/service";
+import type { ReturnCheckRooms } from "@/app/api/checkRoom/controller";
 
-import { yearOption } from "@/components/Room/constants";
+import { StatusOption } from "@/components/CheckList/constants";
 
-type DataType = ReturnRooms[number];
+type DataType = ReturnCheckRooms[number];
 
 const CheckRoomTable: React.FC = () => {
-  const { data, isFetching } = useGetRoomQuery({});
+  const { data, isFetching } = useGetCheckRoomQuery({});
 
-  const roomId = 1;
+  const params = useParams();
+
+  const roomId = +params?.roomId;
+
+  const item = data?.[0];
+  const roomName = item?.room?.name;
+  const departmentName = item?.room?.department?.name;
 
   return (
     <Card
       title={
         <>
-          <Link href={`/check-list`}>Back</Link> จัดการเช็คชื่อ ห้อง 1 ปวช 1.
+          <Link href={`/check-list`}>Back</Link> จัดการเช็คชื่อ {roomName}{" "}
+          {departmentName}
         </>
       }
       extra={<Link href={`/check-list/${roomId}/room/check`}>เพิ่ม</Link>}
     >
       <Table
         loading={isFetching}
-        columns={makeColumns()}
+        columns={makeColumns(roomId)}
         rowKey={"id"}
         dataSource={data}
       />
@@ -38,29 +47,33 @@ const CheckRoomTable: React.FC = () => {
 
 export default CheckRoomTable;
 
-function makeColumns(): ColumnsType<DataType> {
-  const roomId = 1;
-
+function makeColumns(roomId: number): ColumnsType<DataType> {
   return [
     {
       title: "วันที่",
       dataIndex: "date",
       key: "date",
+      render: (value) => dayjs(value).format("D MMM YYYY"),
     },
     {
       title: "ครั้งที่",
-      dataIndex: "number",
-      key: "number",
+      dataIndex: "time",
+      key: "time",
+      align: "center",
     },
     {
       title: "เทอม",
       dataIndex: "term",
       key: "term",
+      align: "center",
     },
     {
       title: "สถานะ ผ่าน/ไม่ผ่าน",
-      dataIndex: "status",
-      key: "status",
+      dataIndex: "isPass",
+      key: "isPass",
+      align: "center",
+      render: (value) =>
+        StatusOption?.find((item) => item.value === value)?.label,
     },
     {
       title: "Action",

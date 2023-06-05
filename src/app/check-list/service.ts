@@ -2,51 +2,54 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import { appBaseQuery } from "@/lib/axios";
 
 import type {
-  ReturnUsers,
-  ReturnUser,
-  ReturnUserCreate,
+  ReturnCheckRoom,
+  ReturnCheckRooms,
+  ReturnCheckRoomCreate,
+  ReturnCheckRoomUpdate,
   RequestBodyCreate,
   RequestBodyUpdate,
-} from "@/app/api/user/controller";
+} from "@/app/api/checkRoom/controller";
 
-export const userApi = createApi({
-  reducerPath: "user",
+export const checkRoomApi = createApi({
+  reducerPath: "checkRoom",
   baseQuery: appBaseQuery,
-  tagTypes: ["users", "user"],
+  tagTypes: ["checkRooms", "checkRoom"],
   endpoints: (builder) => ({
-    getUser: builder.query<ReturnUsers, {}>({
-      query: () => ({ url: "/api/user", method: "GET" }),
-      providesTags: ["users"],
+    getCheckRoom: builder.query<ReturnCheckRooms, {}>({
+      query: () => ({ url: "/api/checkRoom", method: "GET" }),
+      providesTags: ["checkRooms"],
     }),
-    deleteUser: builder.mutation<unknown, number>({
-      query: (id) => ({ url: `/api/user/${id}`, method: "DELETE" }),
-      invalidatesTags: ["users"],
+    deleteCheckRoom: builder.mutation<unknown, number>({
+      query: (id) => ({ url: `/api/checkRoom/${id}`, method: "DELETE" }),
+      invalidatesTags: ["checkRooms"],
     }),
-    createUser: builder.mutation<ReturnUserCreate, RequestBodyCreate>({
-      query: (data) => ({ url: "/api/user", data, method: "POST" }),
+    createCheckRoom: builder.mutation<ReturnCheckRoomCreate, RequestBodyCreate>(
+      {
+        query: (data) => ({ url: "/api/checkRoom", data, method: "POST" }),
+      }
+    ),
+    getCheckRoomById: builder.query<ReturnCheckRoom, number>({
+      query: (id) => ({ url: `/api/checkRoom/${id}`, method: "GET" }),
+      providesTags: ["checkRoom"],
     }),
-    getUserById: builder.query<ReturnUser, number>({
-      query: (id) => ({ url: `/api/user/${id}`, method: "GET" }),
-      providesTags: ["user"],
-    }),
-    updateUser: builder.mutation<
-      ReturnUserCreate,
+    updateCheckRoom: builder.mutation<
+      ReturnCheckRoomUpdate,
       RequestBodyUpdate & { id: number }
     >({
       query: ({ id, ...data }) => ({
-        url: `/api/user/${id}`,
+        url: `/api/checkRoom/${id}`,
         data,
         method: "PUT",
       }),
-      invalidatesTags: ["user", "users"],
+      invalidatesTags: ["checkRoom", "checkRooms"],
     }),
   }),
 });
 
 export const {
-  useGetUserQuery,
-  useDeleteUserMutation,
-  useCreateUserMutation,
-  useUpdateUserMutation,
-  useGetUserByIdQuery,
-} = userApi;
+  useGetCheckRoomQuery,
+  useDeleteCheckRoomMutation,
+  useCreateCheckRoomMutation,
+  useUpdateCheckRoomMutation,
+  useGetCheckRoomByIdQuery,
+} = checkRoomApi;

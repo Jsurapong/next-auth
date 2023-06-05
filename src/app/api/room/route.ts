@@ -7,7 +7,7 @@ export async function GET(request: Request, {}) {
   verifyApi(request); // use middleware
 
   try {
-    const result = await room.get();
+    const result = await room.get(request);
 
     return response.get(JSON.stringify(result));
   } catch (error) {
