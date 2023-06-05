@@ -24,6 +24,7 @@ export const userApi = createApi({
     }),
     createUser: builder.mutation<ReturnUserCreate, RequestBodyCreate>({
       query: (data) => ({ url: "/api/user", data, method: "POST" }),
+      invalidatesTags: ["users"],
     }),
     getUserById: builder.query<ReturnUser, number>({
       query: (id) => ({ url: `/api/user/${id}`, method: "GET" }),

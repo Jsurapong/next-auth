@@ -14,11 +14,14 @@ import {
   Row,
   Col,
 } from "antd";
-
 import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 
+import { authClient } from "@/lib/authClient";
 import { useGetRoomByIdQuery } from "@/app/room/service";
 import { useGetCheckRoomQuery } from "@/app/check-list/service";
+
+import { Role } from "@/lib/types/role";
 
 import {
   StatusOption,
@@ -61,6 +64,7 @@ const FormApp: React.FC<FormAppProps> = ({
   roomId,
 }) => {
   const [form] = Form.useForm<Values>();
+  const { data: session } = useSession();
 
   const onFinish = async (values: Values) => {
     console.log(values);
@@ -70,12 +74,20 @@ const FormApp: React.FC<FormAppProps> = ({
 
   const { data: checkListData } = useGetCheckRoomQuery({});
 
-  console.log({ checkListData });
-
   const { data, isLoading } = useGetRoomByIdQuery(roomId);
 
   const roomName = data?.name;
   const departmentName = data?.department?.name;
+
+  const canEditIsPass = authClient(
+    [Role.Admin, Role.TeacherL1],
+    session?.user?.type!
+  );
+
+  const canEditStudentIsPass = authClient(
+    [Role.Admin, Role.TeacherL2],
+    session?.user?.type!
+  );
 
   // initialValues checkStudent to Object for lookup
   const initCheckObject = initialValues?.checkStudent?.reduce(
@@ -90,7 +102,7 @@ const FormApp: React.FC<FormAppProps> = ({
     isPass: initCheckObject?.[item.id],
   }));
 
-  const date = dayjs(initialValues?.date);
+  const date = initialValues?.date ? dayjs(initialValues?.date) : undefined;
 
   return (
     <Card
@@ -114,7 +126,7 @@ const FormApp: React.FC<FormAppProps> = ({
         }}
       >
         <Form.Item name="isPass" label="สำหรับครูปกครอง">
-          <Select disabled options={StatusOption} />
+          <Select disabled={!canEditIsPass} options={StatusOption} />
         </Form.Item>
         <Form.Item name="date" label="วันที่ตรวจ" rules={[{ required: true }]}>
           <DatePicker
@@ -131,7 +143,7 @@ const FormApp: React.FC<FormAppProps> = ({
         </Form.Item>
         <Form.Item
           name="time"
-          label="ครั้งที่"
+          label="ครั้ง"
           rules={[
             { required: true },
             ({ getFieldValue }) => ({
@@ -141,7 +153,7 @@ const FormApp: React.FC<FormAppProps> = ({
                   (item) => item.term === selectTerm && item.time === value
                 );
 
-                if (!value || isNotDuplicateTerm) {
+                if (!value || isNotDuplicateTerm || method === "update") {
                   return Promise.resolve();
                 }
                 return Promise.reject(
@@ -161,12 +173,12 @@ const FormApp: React.FC<FormAppProps> = ({
               pagination={false}
               columns={[
                 {
-                  title: "name",
+                  title: "ชื่อ",
                   key: "name",
                   dataIndex: "name",
                 },
                 {
-                  title: "Status",
+                  title: "สถานะ",
                   key: "isPass",
                   dataIndex: "isPass",
                   width: "30%",
@@ -189,6 +201,7 @@ const FormApp: React.FC<FormAppProps> = ({
                           rules={[{ required: true }]}
                         >
                           <Select
+                            disabled={!canEditStudentIsPass}
                             style={{ width: "200px" }}
                             options={StatusOption}
                           ></Select>
@@ -202,34 +215,6 @@ const FormApp: React.FC<FormAppProps> = ({
             />
           </Col>
         </Row>
-
-        {/* {checkStudent?.map((item, index) => {
-          return (
-            <Space
-              style={{ display: "flex", marginBottom: 8 }}
-              align="baseline"
-              key={item.userId}
-            >
-              <Form.Item
-                name={["checkStudent", index, "userId"]}
-                label="id"
-                rules={[{ required: true }]}
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item
-                name={["checkStudent", index, "isPass"]}
-                label="สถานะ"
-                rules={[{ required: true }]}
-              >
-                <Select
-                  style={{ width: "200px" }}
-                  options={StatusOption}
-                ></Select>
-              </Form.Item>
-            </Space>
-          );
-        })} */}
 
         <Form.Item {...tailLayout}>
           <Space>

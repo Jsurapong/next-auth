@@ -3,41 +3,53 @@
 import React from "react";
 import { Layout, Menu } from "antd";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 import TopNav from "@/components/TopNav";
+import { authClient } from "@/lib/authClient";
 
+import { Role } from "@/lib/types/role";
 const { Header, Content, Footer, Sider } = Layout;
 
 const Menus = [
   {
     title: "หน้าแรก",
     path: "/",
+    roles: [Role.Admin, Role.TeacherL1, Role.TeacherL2, Role.Student],
   },
   {
     title: "จัดการผู้ใช้งาน",
     path: "/user",
+    roles: [Role.Admin],
   },
   {
     title: "จัดการห้อง",
     path: "/room",
+    roles: [Role.Admin],
   },
 
   {
     title: "เช็คชื่อรายห้อง",
     path: "/check-list",
+    roles: [Role.Admin, Role.TeacherL1, Role.TeacherL2],
   },
   {
     title: "จัดการแผนก",
     path: "/department",
+    roles: [Role.Admin],
   },
-  // {
-  //   title: "Report",
-  //   path: "/report",
-  // },
 ];
 
 const LayoutAdmin: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const router = useRouter();
+
+  const { data: session } = useSession();
+
+  const MenusByRole = Menus.filter((item) =>
+    authClient(item.roles, session?.user?.type!)
+  ).map((item) => ({ label: item.title, key: item.path }));
+
+  // if (!session) return null;
 
   return (
     <Layout>
@@ -63,7 +75,7 @@ const LayoutAdmin: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           theme="dark"
           mode="inline"
           defaultSelectedKeys={["4"]}
-          items={Menus.map((item) => ({ label: item.title, key: item.path }))}
+          items={MenusByRole}
           onClick={(e) => router.push(e.key)}
         />
       </Sider>

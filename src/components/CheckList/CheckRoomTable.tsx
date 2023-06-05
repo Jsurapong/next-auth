@@ -54,21 +54,28 @@ function makeColumns(roomId: number): ColumnsType<DataType> {
       dataIndex: "date",
       key: "date",
       render: (value) => dayjs(value).format("D MMM YYYY"),
+      sorter: (a, b) =>
+        dayjs(a.date)
+          ?.format("YYYYMMDD")
+          ?.localeCompare(dayjs(b.date)?.format("YYYYMMDD")),
+    },
+
+    {
+      title: "เทอม",
+      dataIndex: "term",
+      key: "term",
+      align: "center",
+      sorter: (a, b) => a.term - b.term,
     },
     {
       title: "ครั้งที่",
       dataIndex: "time",
       key: "time",
       align: "center",
+      sorter: (a, b) => a.time - b.time,
     },
     {
-      title: "เทอม",
-      dataIndex: "term",
-      key: "term",
-      align: "center",
-    },
-    {
-      title: "สถานะ ผ่าน/ไม่ผ่าน",
+      title: "ฝ่ายปกครอง ผ่าน/ไม่ผ่าน",
       dataIndex: "isPass",
       key: "isPass",
       align: "center",
