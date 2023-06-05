@@ -18,6 +18,7 @@ import {
 import dayjs from "dayjs";
 
 import { useGetRoomByIdQuery } from "@/app/room/service";
+import { useGetCheckRoomQuery } from "@/app/check-list/service";
 
 import {
   StatusOption,
@@ -66,6 +67,10 @@ const FormApp: React.FC<FormAppProps> = ({
     await handleSubmit(values);
     method === "add" && form.resetFields();
   };
+
+  const { data: checkListData } = useGetCheckRoomQuery({});
+
+  console.log({ checkListData });
 
   const { data, isLoading } = useGetRoomByIdQuery(roomId);
 
@@ -118,9 +123,34 @@ const FormApp: React.FC<FormAppProps> = ({
           />
         </Form.Item>
         <Form.Item name="term" label="เทอม" rules={[{ required: true }]}>
-          <Select disabled={method === "update"} options={TermOption} />
+          <Select
+            onChange={() => form.setFieldValue("time", undefined)}
+            disabled={method === "update"}
+            options={TermOption}
+          />
         </Form.Item>
-        <Form.Item name="time" label="ครั้งที่" rules={[{ required: true }]}>
+        <Form.Item
+          name="time"
+          label="ครั้งที่"
+          rules={[
+            { required: true },
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                const selectTerm = getFieldValue("term");
+                const isNotDuplicateTerm = !checkListData?.find(
+                  (item) => item.term === selectTerm && item.time === value
+                );
+
+                if (!value || isNotDuplicateTerm) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(
+                  new Error("เลือกเทอมกับครั้งที่ถูกตรวจไปแล้ว")
+                );
+              },
+            }),
+          ]}
+        >
           <Select disabled={method === "update"} options={TimeOption} />
         </Form.Item>
 

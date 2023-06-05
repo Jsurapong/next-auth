@@ -1,10 +1,28 @@
 import { BaseQueryFn } from "@reduxjs/toolkit/query/react";
+import { getSession } from "next-auth/react";
 
-import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
+import axios, {
+  AxiosRequestConfig,
+  AxiosResponse,
+  AxiosError,
+  AxiosHeaders,
+} from "axios";
 
 const instance = axios.create({
   // baseURL: process.env.NEXT_PUBLIC_API_ENDPOINT,
   baseURL: "http://localhost:3000",
+});
+
+instance.interceptors.request.use(async (request) => {
+  const session = await getSession();
+
+  if (session) {
+    (request.headers as AxiosHeaders).set(
+      "authorization",
+      `${session.user.accessToken}`
+    );
+  }
+  return request;
 });
 
 const axiosBaseQuery =
@@ -22,7 +40,12 @@ const axiosBaseQuery =
   > =>
   async ({ url, method, data, params }) => {
     try {
-      const result = await axios({ url: baseUrl + url, method, data, params });
+      const result = await instance({
+        url: baseUrl + url,
+        method,
+        data,
+        params,
+      });
       return { data: result.data };
     } catch (axiosError) {
       let err = axiosError as AxiosError;

@@ -34,6 +34,8 @@ async function get(request: Request) {
 
   const jwtDecode = verifyJwt(accessToken!);
 
+  console.log({ accessToken });
+
   let where = {};
   if (jwtDecode?.type === Role.TeacherL2) {
     where = { teacherId: +jwtDecode?.id };
