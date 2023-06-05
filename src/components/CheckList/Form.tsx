@@ -2,7 +2,18 @@
 
 import Link from "next/link";
 import React from "react";
-import { Button, Form, Input, Space, Card, Select, DatePicker } from "antd";
+import {
+  Button,
+  Form,
+  Input,
+  Space,
+  Card,
+  Select,
+  DatePicker,
+  Table,
+  Row,
+  Col,
+} from "antd";
 
 import dayjs from "dayjs";
 
@@ -90,18 +101,14 @@ const FormApp: React.FC<FormAppProps> = ({
         {...layout}
         form={form}
         onFinish={onFinish}
-        style={{ maxWidth: 600 }}
+        style={{ maxWidth: 800 }}
         initialValues={{
           ...initialValues,
           date: date,
           checkStudent: checkStudent,
         }}
       >
-        <Form.Item
-          name="isPass"
-          label="สำหรับครูปกครอง"
-          // rules={[{ required: true }]}
-        >
+        <Form.Item name="isPass" label="สำหรับครูปกครอง">
           <Select disabled options={StatusOption} />
         </Form.Item>
         <Form.Item name="date" label="วันที่ตรวจ" rules={[{ required: true }]}>
@@ -117,7 +124,56 @@ const FormApp: React.FC<FormAppProps> = ({
           <Select disabled={method === "update"} options={TimeOption} />
         </Form.Item>
 
-        {checkStudent?.map((item, index) => {
+        <Row gutter={[16, 16]} style={{ paddingBottom: 16 }}>
+          <Col md={{ offset: 6, span: 18 }}>
+            <Table
+              rowKey={"userId"}
+              pagination={false}
+              columns={[
+                {
+                  title: "name",
+                  key: "name",
+                  dataIndex: "name",
+                },
+                {
+                  title: "Status",
+                  key: "isPass",
+                  dataIndex: "isPass",
+                  width: "30%",
+                  render: (value, _, index) => {
+                    return (
+                      <>
+                        <Form.Item
+                          noStyle
+                          hidden
+                          name={["checkStudent", index, "userId"]}
+                          label="id"
+                          rules={[{ required: true }]}
+                        >
+                          <Input />
+                        </Form.Item>
+                        <Form.Item
+                          noStyle
+                          name={["checkStudent", index, "isPass"]}
+                          label=""
+                          rules={[{ required: true }]}
+                        >
+                          <Select
+                            style={{ width: "200px" }}
+                            options={StatusOption}
+                          ></Select>
+                        </Form.Item>
+                      </>
+                    );
+                  },
+                },
+              ]}
+              dataSource={checkStudent}
+            />
+          </Col>
+        </Row>
+
+        {/* {checkStudent?.map((item, index) => {
           return (
             <Space
               style={{ display: "flex", marginBottom: 8 }}
@@ -143,7 +199,7 @@ const FormApp: React.FC<FormAppProps> = ({
               </Form.Item>
             </Space>
           );
-        })}
+        })} */}
 
         <Form.Item {...tailLayout}>
           <Space>

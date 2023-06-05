@@ -14,10 +14,6 @@ import {
 const FormCreate: React.FC = () => {
   const params = useParams();
 
-  console.log({ params });
-
-  const id = params?.id;
-
   const roomId = +params?.roomId;
   const checkId = +params?.checkId;
 
