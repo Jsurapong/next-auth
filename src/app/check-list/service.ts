@@ -15,8 +15,8 @@ export const checkRoomApi = createApi({
   baseQuery: appBaseQuery,
   tagTypes: ["checkRooms", "checkRoom"],
   endpoints: (builder) => ({
-    getCheckRoom: builder.query<ReturnCheckRooms, {}>({
-      query: () => ({ url: "/api/checkRoom", method: "GET" }),
+    getCheckRoom: builder.query<ReturnCheckRooms, { roomId: number }>({
+      query: (params) => ({ url: "/api/checkRoom", method: "GET", params }),
       providesTags: ["checkRooms"],
     }),
     deleteCheckRoom: builder.mutation<unknown, number>({

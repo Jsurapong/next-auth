@@ -15,11 +15,11 @@ import { StatusOption } from "@/components/CheckList/constants";
 type DataType = ReturnCheckRooms[number];
 
 const CheckRoomTable: React.FC = () => {
-  const { data, isFetching } = useGetCheckRoomQuery({});
-
   const params = useParams();
 
   const roomId = +params?.roomId;
+
+  const { data, isFetching } = useGetCheckRoomQuery({ roomId });
 
   const item = data?.[0];
   const roomName = item?.room?.name;

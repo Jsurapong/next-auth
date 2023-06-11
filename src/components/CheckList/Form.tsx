@@ -75,7 +75,7 @@ const FormApp: React.FC<FormAppProps> = ({
     method === "add" && form.resetFields();
   };
 
-  const { data: checkListData } = useGetCheckRoomQuery({});
+  const { data: checkListData } = useGetCheckRoomQuery({ roomId });
 
   const { data, isLoading } = useGetRoomByIdQuery(roomId);
 

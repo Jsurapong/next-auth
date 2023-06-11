@@ -49,16 +49,35 @@ const select_include = Prisma.validator<Prisma.CheckRoomArgs>()({
   },
 });
 
-async function get() {
+async function get(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const roomId = +searchParams.get("roomId")!;
+
+  let where = {};
+
+  if (roomId) {
+    where = { roomId };
+  }
+
   const result = await prisma.checkRoom.findMany({
+    where,
     ...select_include,
   });
   return result;
 }
 
-async function getById(id: number) {
+async function getById(request: Request, id: number) {
+  const { searchParams } = new URL(request.url);
+  const roomId = +searchParams.get("roomId")!;
+
+  let where = {};
+
+  if (roomId) {
+    where = { roomId };
+  }
+
   const result = await prisma.checkRoom.findFirst({
-    where: { id: +id },
+    where: { id: +id, ...where },
     ...select_include,
   });
   return result;
