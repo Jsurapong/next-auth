@@ -1,15 +1,14 @@
+import React from "react";
 import { Card } from "antd";
 import Echarts, { EChartsOption } from "../Echarts";
 
 import { useGetStudentReportQuery } from "@/app/service";
 import { orderBy } from "lodash";
-import { useSession } from "next-auth/react";
 
-const LogChart = () => {
-  const { data: session } = useSession();
-  const userId = +session?.user?.id!;
-
-  const { data } = useGetStudentReportQuery(userId, { skip: !userId });
+const LogChart: React.FC<{ userId: number }> = ({ userId }) => {
+  const { data, isFetching } = useGetStudentReportQuery(userId, {
+    skip: !userId,
+  });
 
   const newData = orderBy(
     data,
@@ -58,7 +57,7 @@ const LogChart = () => {
   };
 
   return (
-    <Card title="ประวัติการตรวจ">
+    <Card title="ผลการตรวจของนักเรียน" loading={isFetching}>
       <Echarts option={data0} height={300} />
     </Card>
   );

@@ -5,7 +5,7 @@ import Echarts, { EChartsOption } from "../Echarts";
 import { useGetStudentReportQuery } from "@/app/service";
 import { groupBy, orderBy } from "lodash";
 
-const TotalStudentChart: React.FC<{ userId: number }> = ({ userId }) => {
+const TotalRoomChart: React.FC<{ userId: number }> = ({ userId }) => {
   const { data } = useGetStudentReportQuery(userId, { skip: !userId });
 
   const newData = orderBy(
@@ -66,10 +66,10 @@ const TotalStudentChart: React.FC<{ userId: number }> = ({ userId }) => {
   };
 
   return (
-    <Card title="ภาพรวมการตรวจ โดยครูประจำชั้น">
+    <Card title="ภาพรวมการตรวจ โดยฝ่ายปกครอง">
       <Echarts option={data0} height={300} />
     </Card>
   );
 };
 
-export default TotalStudentChart;
+export default TotalRoomChart;

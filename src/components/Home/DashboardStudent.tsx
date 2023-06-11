@@ -1,23 +1,27 @@
 "use client";
 
 import { Row, Col } from "antd";
+import { useSession } from "next-auth/react";
 
 import LogStudentChart from "./LogStudentChart";
 import TotalStudentChart from "./TotalStudentChart";
 import Info from "./Info";
 
 const Dashboard = () => {
+  const { data: session } = useSession();
+  const userId = +session?.user?.id!;
+
   return (
     <>
       <Row gutter={[16, 16]}>
-        <Col sm={24} md={12}>
-          <Info />
+        <Col xs={24} sm={24} md={12}>
+          <Info userId={userId} />
         </Col>
-        <Col sm={24} md={12}>
-          <TotalStudentChart />
+        <Col xs={24} sm={24} md={12}>
+          <TotalStudentChart userId={userId} />
         </Col>
-        <Col sm={24} md={24}>
-          <LogStudentChart />
+        <Col xs={24} sm={24} md={24}>
+          <LogStudentChart userId={userId} />
         </Col>
       </Row>
     </>
