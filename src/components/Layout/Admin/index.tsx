@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Layout, Menu } from "antd";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -51,6 +51,8 @@ const LayoutAdmin: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   // if (!session) return null;
 
+  useEffect(() => {}, []);
+
   return (
     <Layout>
       <Sider
@@ -83,11 +85,11 @@ const LayoutAdmin: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         <Header>
           <TopNav />
         </Header>
-        <Content style={{ margin: "24px 16px 0" }}>
+        <Content style={{ margin: "24px 16px 0", minHeight: "100vh" }}>
           <div
             style={{
               padding: 24,
-              height: "100vh",
+              minHeight: "100vh" /* fall-back */,
             }}
           >
             {children}
