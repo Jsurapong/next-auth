@@ -29,6 +29,8 @@ import {
   TimeOption,
 } from "@/components/CheckList/constants";
 
+import { yearOption } from "../Room/constants";
+
 const layout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 },
@@ -44,6 +46,7 @@ export type Values = {
   date: string;
   isPass: boolean;
   checkStudent: { userId: number; isPass: boolean }[];
+  year: number;
 };
 
 type FormAppProps = {
@@ -78,6 +81,7 @@ const FormApp: React.FC<FormAppProps> = ({
 
   const roomName = data?.name;
   const departmentName = data?.department?.name;
+  const year = data?.year;
 
   const canEditIsPass = authClient(
     [Role.Admin, Role.TeacherL1],
@@ -104,13 +108,16 @@ const FormApp: React.FC<FormAppProps> = ({
 
   const date = initialValues?.date ? dayjs(initialValues?.date) : undefined;
 
+  const title = !roomId ? "เพิ่ม" : "แก้ไข";
+
   return (
     <Card
       title={
-        <>
-          <Link href={`check-list/${roomId}/room`}>กลับ</Link> เพิ่ม
-          {roomName} {departmentName}
-        </>
+        <Space>
+          {title}
+          {roomName}
+          {departmentName}
+        </Space>
       }
       loading={loading || isLoading}
     >
@@ -123,6 +130,7 @@ const FormApp: React.FC<FormAppProps> = ({
           ...initialValues,
           date: date,
           checkStudent: checkStudent,
+          year,
         }}
       >
         <Form.Item name="isPass" label="สำหรับครูปกครอง">
@@ -133,6 +141,13 @@ const FormApp: React.FC<FormAppProps> = ({
             disabled={method === "update"}
             style={{ width: "100%" }}
           />
+        </Form.Item>
+        <Form.Item
+          name="year"
+          label="ชั้นการศึกษา"
+          rules={[{ required: true }]}
+        >
+          <Select disabled options={yearOption} />
         </Form.Item>
         <Form.Item name="term" label="เทอม" rules={[{ required: true }]}>
           <Select
@@ -218,6 +233,9 @@ const FormApp: React.FC<FormAppProps> = ({
 
         <Form.Item {...tailLayout}>
           <Space>
+            <Link href={`check-list/${roomId}/room`}>
+              <Button type="default">ย้อนกลับ</Button>
+            </Link>
             <Button type="primary" htmlType="submit" loading={submitting}>
               บันทึก
             </Button>

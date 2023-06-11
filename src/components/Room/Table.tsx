@@ -68,7 +68,7 @@ function makeColumns(
       render: renderTeacher,
     },
     {
-      title: "ปีการศึกษา",
+      title: "ชั้นการศึกษา",
       dataIndex: "year",
       key: "year",
       render: (value) => yearOption.find((item) => item.value === value)?.label,

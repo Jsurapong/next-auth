@@ -26,6 +26,7 @@ export const checkRoomApi = createApi({
     createCheckRoom: builder.mutation<ReturnCheckRoomCreate, RequestBodyCreate>(
       {
         query: (data) => ({ url: "/api/checkRoom", data, method: "POST" }),
+        invalidatesTags: ["checkRooms"],
       }
     ),
     getCheckRoomById: builder.query<ReturnCheckRoom, number>({

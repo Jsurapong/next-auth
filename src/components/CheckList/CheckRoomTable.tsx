@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { Space, Table, Card } from "antd";
+import { Space, Table, Card, Button } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import dayjs from "dayjs";
 
@@ -28,10 +28,9 @@ const CheckRoomTable: React.FC = () => {
   return (
     <Card
       title={
-        <>
-          <Link href={`/check-list`}>Back</Link> จัดการเช็คชื่อ {roomName}{" "}
-          {departmentName}
-        </>
+        <Space>
+          จัดการเช็คชื่อ {roomName} {departmentName}
+        </Space>
       }
       extra={<Link href={`/check-list/${roomId}/room/check`}>เพิ่ม</Link>}
     >
@@ -40,6 +39,11 @@ const CheckRoomTable: React.FC = () => {
         columns={makeColumns(roomId)}
         rowKey={"id"}
         dataSource={data}
+        footer={() => (
+          <Link href={`/check-list`}>
+            <Button>ย้อนกลับ</Button>
+          </Link>
+        )}
       />
     </Card>
   );

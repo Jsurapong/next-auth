@@ -21,9 +21,10 @@ export type RequestBodyCreate = {
   time: number;
   isPass: boolean;
   roomId: number;
+  year: number;
   checkStudent: { userId: number; isPass: boolean }[];
 };
-export type RequestBodyUpdate = Omit<RequestBodyCreate, "id">;
+export type RequestBodyUpdate = Omit<RequestBodyCreate, "id" | "year">;
 
 // ============= Action Prisma ==================
 
@@ -73,6 +74,7 @@ async function create(request: Request) {
       time: body?.time,
       isPass: body?.isPass,
       roomId: body?.roomId,
+      year: body?.year,
       checkStudent: {
         createMany: {
           data: body?.checkStudent?.map((item) => ({
