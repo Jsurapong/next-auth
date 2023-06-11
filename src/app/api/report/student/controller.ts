@@ -5,19 +5,6 @@ export const student = { get };
 
 type ThenArg<T> = T extends PromiseLike<infer U> ? U : T;
 export type ReturnStudentReport = ThenArg<ReturnType<typeof student.get>>;
-// export type ReturnRoom = ThenArg<ReturnType<typeof student.getById>>;
-// export type ReturnRoomCreate = ThenArg<ReturnType<typeof room.create>>;
-// export type ReturnRoomUpdate = ThenArg<ReturnType<typeof room.update>>;
-// export type ReturnRoomDelete = ThenArg<ReturnType<typeof room.remove>>;
-// export type RequestBodyCreate = {
-//   name: string;
-//   teacherId: number;
-//   departmentId: number;
-//   term: number;
-//   year: number;
-//   users: number[];
-// };
-// export type RequestBodyUpdate = RequestBodyCreate;
 
 // ============= Action Prisma ==================
 
@@ -37,11 +24,3 @@ async function get(request: Request) {
   });
   return report;
 }
-
-// async function getById(id: number) {
-//   const department = await prisma.checkStudent.findFirst({
-//     where: { userId: +id },
-//     ...select_include,
-//   });
-//   return department;
-// }

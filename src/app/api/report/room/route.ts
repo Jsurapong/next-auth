@@ -1,15 +1,12 @@
 import { verifyApi, response } from "@/lib/api";
 
-import { student } from "../controller";
+import { room } from "./controller";
 
-export async function GET(
-  request: Request,
-  { params }: { params: { id: number } }
-) {
+export async function GET(request: Request) {
   verifyApi(request); // use middleware
 
   try {
-    const result = await student.getById(+params.id);
+    const result = await room.get(request);
 
     return new Response(JSON.stringify(result));
   } catch (error) {
