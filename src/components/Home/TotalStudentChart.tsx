@@ -10,7 +10,7 @@ const TotalStudentChart: React.FC<{ userId: number }> = ({ userId }) => {
 
   const newData = orderBy(
     data,
-    ["checkRoom.year", "checkRoom.term", "checkRoom.time"],
+    ["year", "term", "time"],
     ["desc", "desc", "desc"]
   );
 

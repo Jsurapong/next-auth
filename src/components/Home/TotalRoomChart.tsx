@@ -2,15 +2,15 @@ import React from "react";
 import { Card } from "antd";
 import Echarts, { EChartsOption } from "../Echarts";
 
-import { useGetStudentReportQuery } from "@/app/service";
+import { useGetRoomReportQuery } from "@/app/service";
 import { groupBy, orderBy } from "lodash";
 
-const TotalRoomChart: React.FC<{ userId: number }> = ({ userId }) => {
-  const { data } = useGetStudentReportQuery(userId, { skip: !userId });
+const TotalRoomChart: React.FC<{ roomId: number }> = ({ roomId }) => {
+  const { data } = useGetRoomReportQuery(roomId, { skip: !roomId });
 
   const newData = orderBy(
     data,
-    ["checkRoom.year", "checkRoom.term", "checkRoom.time"],
+    ["year", "term", "time"],
     ["desc", "desc", "desc"]
   );
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Card, Select, Space } from "antd";
 import { useGetRoomQuery } from "@/app/room/service";
 import { useSession } from "next-auth/react";
@@ -9,6 +9,8 @@ import { Role } from "@/lib/types/role";
 const FilterRoom: React.FC<{
   onChange: (value: number | undefined) => void;
 }> = ({ onChange }) => {
+  const [selected, setSelected] = React.useState<number | undefined>();
+
   const { data, isFetching } = useGetRoomQuery({});
 
   const { data: session } = useSession();
@@ -28,13 +30,29 @@ const FilterRoom: React.FC<{
       return { label: fullName, value: item.id };
     });
 
+  const handleOnChange = useCallback(
+    (value: number | undefined) => {
+      onChange(value);
+      setSelected(value);
+      console.log({ value });
+    },
+    [onChange]
+  );
+
+  React.useEffect(() => {
+    if (options && !selected) {
+      handleOnChange(options?.[0].value);
+    }
+  }, [handleOnChange, options, selected]);
+
   return (
     <Card>
       <Space>
         ห้อง
         <Select
+          value={selected}
           onChange={(value: number | undefined) => {
-            onChange(value);
+            handleOnChange(value);
           }}
           loading={isFetching}
           options={options}

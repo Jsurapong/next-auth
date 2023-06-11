@@ -2,12 +2,12 @@ import React from "react";
 import { Card } from "antd";
 import Echarts, { EChartsOption } from "../Echarts";
 
-import { useGetStudentReportQuery } from "@/app/service";
+import { useGetRoomReportQuery } from "@/app/service";
 import { orderBy } from "lodash";
 
-const LogStudentChart: React.FC<{ userId: number }> = ({ userId }) => {
-  const { data, isFetching } = useGetStudentReportQuery(userId, {
-    skip: !userId,
+const LogRoomChart: React.FC<{ roomId: number }> = ({ roomId }) => {
+  const { data, isFetching } = useGetRoomReportQuery(roomId, {
+    skip: !roomId,
   });
 
   const newData = orderBy(
@@ -17,7 +17,7 @@ const LogStudentChart: React.FC<{ userId: number }> = ({ userId }) => {
   );
 
   const xAxis = newData?.map((item) => {
-    return `ปี ${item?.checkRoom?.year} เทอม ${item.checkRoom?.term} ครั้ง ${item?.checkRoom?.time}`;
+    return `ปี ${item?.year} เทอม ${item?.term} ครั้ง ${item?.time}`;
   });
 
   const dataValue = newData?.map((item) => {
@@ -59,4 +59,4 @@ const LogStudentChart: React.FC<{ userId: number }> = ({ userId }) => {
   );
 };
 
-export default LogStudentChart;
+export default LogRoomChart;

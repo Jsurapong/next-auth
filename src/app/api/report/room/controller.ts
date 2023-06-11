@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 export const room = { get };
 
 type ThenArg<T> = T extends PromiseLike<infer U> ? U : T;
-export type ReturnStudentReport = ThenArg<ReturnType<typeof room.get>>;
+export type ReturnRoomReport = ThenArg<ReturnType<typeof room.get>>;
 
 // ============= Action Prisma ==================
 

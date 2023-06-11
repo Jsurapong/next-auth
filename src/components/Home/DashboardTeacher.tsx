@@ -3,16 +3,16 @@
 import React from "react";
 import { Row, Col } from "antd";
 
-import LogStudentChart from "./LogStudentChart";
+import LogRoomChart from "./LogRoomChart";
 import FilterRoom from "./FilterRoom";
 import TotalRoomChart from "./TotalRoomChart";
-import Info from "./Info";
+import LogRoomTable from "./LogRoomTable";
 
 const DashboardTeacher = () => {
-  const [room, setRoom] = React.useState<number | undefined>();
+  const [roomId, setRoomId] = React.useState<number | undefined>();
 
   const onChange = (value: number | undefined) => {
-    setRoom(value);
+    setRoomId(value);
   };
 
   return (
@@ -21,14 +21,14 @@ const DashboardTeacher = () => {
         <Col span={24}>
           <FilterRoom onChange={onChange} />
         </Col>
-        <Col xs={24} sm={24} md={12}>
-          {/* <Info userId={userId} /> */}
+        <Col xs={24} sm={24} md={6}>
+          <TotalRoomChart roomId={roomId!} />
         </Col>
-        <Col xs={24} sm={24} md={12}>
-          {/* <TotalRoomChart userId={userId} /> */}
+        <Col xs={24} sm={24} md={18}>
+          <LogRoomTable roomId={roomId!} />
         </Col>
         <Col xs={24} sm={24} md={24}>
-          {/* <LogStudentChart userId={userId} /> */}
+          <LogRoomChart roomId={roomId!} />
         </Col>
       </Row>
     </>

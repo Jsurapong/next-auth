@@ -14,10 +14,10 @@ const Dashboard = () => {
   return (
     <>
       <Row gutter={[16, 16]}>
-        <Col xs={24} sm={24} md={12}>
+        <Col xs={24} sm={24} md={8}>
           <Info userId={userId} />
         </Col>
-        <Col xs={24} sm={24} md={12}>
+        <Col xs={24} sm={24} md={16}>
           <TotalStudentChart userId={userId} />
         </Col>
         <Col xs={24} sm={24} md={24}>

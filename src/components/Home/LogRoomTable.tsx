@@ -1,27 +1,21 @@
-"use client";
-
 import React from "react";
-import Link from "next/link";
-import { useParams } from "next/navigation";
-import { Space, Table, Card, Button } from "antd";
+import { Card, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import dayjs from "dayjs";
 import { orderBy } from "lodash";
 
-import { useGetCheckRoomQuery } from "@/app/check-list/service";
-import type { ReturnCheckRooms } from "@/app/api/checkRoom/controller";
+import { useGetRoomReportQuery } from "@/app/service";
+import type { ReturnRoomReport } from "@/app/api/report/room/controller";
 
 import { StatusOption } from "@/components/CheckList/constants";
 import { yearOption } from "@/components/Room/constants";
 
-type DataType = ReturnCheckRooms[number];
+type DataType = ReturnRoomReport[number];
 
-const CheckRoomTable: React.FC = () => {
-  const params = useParams();
-
-  const roomId = +params?.roomId;
-
-  const { data, isFetching } = useGetCheckRoomQuery({ roomId });
+const LogRoomTable: React.FC<{ roomId: number }> = ({ roomId }) => {
+  const { data, isFetching } = useGetRoomReportQuery(roomId, {
+    skip: !roomId,
+  });
 
   const newData = orderBy(
     data,
@@ -29,35 +23,21 @@ const CheckRoomTable: React.FC = () => {
     ["desc", "desc", "desc"]
   );
 
-  const item = data?.[0];
-  const roomName = item?.room?.name;
-  const departmentName = item?.room?.department?.name;
-
   return (
-    <Card
-      title={
-        <Space>
-          จัดการเช็คชื่อ {roomName} {departmentName}
-        </Space>
-      }
-      extra={<Link href={`/check-list/${roomId}/room/check`}>เพิ่ม</Link>}
-    >
+    <Card title="ผลการตรวจของนักเรียน">
       <Table
+        size={"small"}
         loading={isFetching}
         columns={makeColumns(roomId)}
         rowKey={"id"}
         dataSource={newData}
-        footer={() => (
-          <Link href={`/check-list`}>
-            <Button>ย้อนกลับ</Button>
-          </Link>
-        )}
+        pagination={false}
       />
     </Card>
   );
 };
 
-export default CheckRoomTable;
+export default LogRoomTable;
 
 function makeColumns(roomId: number): ColumnsType<DataType> {
   return [
@@ -99,16 +79,6 @@ function makeColumns(roomId: number): ColumnsType<DataType> {
       align: "center",
       render: (value) =>
         StatusOption?.find((item) => item.value === value)?.label,
-    },
-    {
-      title: "Action",
-      key: "action",
-      render: (_, record) => (
-        <Space size="middle">
-          <Link href={`/check-list/${roomId}/room/check/${record.id}`}>ดู</Link>
-        </Space>
-      ),
-      align: "center",
     },
   ];
 }

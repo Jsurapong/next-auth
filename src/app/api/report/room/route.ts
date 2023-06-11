@@ -8,7 +8,7 @@ export async function GET(request: Request) {
   try {
     const result = await room.get(request);
 
-    return new Response(JSON.stringify(result));
+    return response.get(JSON.stringify(result));
   } catch (error) {
     return response.error(JSON.stringify(error));
   }
