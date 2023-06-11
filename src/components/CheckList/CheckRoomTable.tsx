@@ -93,7 +93,7 @@ function makeColumns(roomId: number): ColumnsType<DataType> {
       sorter: (a, b) => a.time - b.time,
     },
     {
-      title: "ฝ่ายปกครอง ผ่าน/ไม่ผ่าน",
+      title: "ฝ่ายปกครอง ",
       dataIndex: "isPass",
       key: "isPass",
       align: "center",

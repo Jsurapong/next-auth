@@ -67,6 +67,7 @@ model CheckStudent {
   deleted     Boolean    @default(false)
   checkRoom   CheckRoom? @relation(fields: [checkRoomId], references: [id], onDelete: Cascade)
   checkRoomId Int?
+  remark      String?
 
   @@unique([checkRoomId, userId])
 }
