@@ -2,16 +2,15 @@
 
 import React from "react";
 import ReactECharts from "echarts-for-react"; // or var ReactECharts = require('echarts-for-react');
-import type {
-  EChartsOption,
-  EChartsInstance,
-  EChartsReactProps,
-} from "echarts-for-react";
+import type { EChartsInstance, EChartsReactProps } from "echarts-for-react";
 
-const Echarts: React.FC<{ option: EChartsOption; height: string | number }> = ({
-  option,
-  height,
-}) => {
+import type { EChartsOption } from "echarts";
+export type { EChartsOption } from "echarts";
+
+const Echarts: React.FC<{
+  option?: EChartsOption;
+  height: string | number;
+}> = ({ option, height }) => {
   const [m, setM] = React.useState(false);
 
   React.useEffect(() => {

@@ -4,6 +4,7 @@ import { userApi } from "@/app/user/service";
 import { departmentApi } from "@/app/department/service";
 import { roomApi } from "@/app/room/service";
 import { checkRoomApi } from "@/app/check-list/service";
+import { reportApi } from "@/app/service";
 
 export function makeStore() {
   return configureStore({
@@ -12,6 +13,7 @@ export function makeStore() {
       [departmentApi.reducerPath]: departmentApi.reducer,
       [roomApi.reducerPath]: roomApi.reducer,
       [checkRoomApi.reducerPath]: checkRoomApi.reducer,
+      [reportApi.reducerPath]: reportApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat([
@@ -19,6 +21,7 @@ export function makeStore() {
         departmentApi.middleware,
         roomApi.middleware,
         checkRoomApi.middleware,
+        reportApi.middleware,
       ]),
   });
 }

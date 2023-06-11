@@ -20,7 +20,7 @@ const TopNav: React.FC = () => {
       style={{ justifyContent: "end" }}
       items={[
         {
-          label: session?.user.f_name + "  " + role,
+          label: (session?.user.f_name || "") + "  " + (role || ""),
           key: "profile",
         },
         {

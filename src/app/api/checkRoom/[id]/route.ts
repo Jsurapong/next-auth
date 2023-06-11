@@ -1,4 +1,3 @@
-import prisma from "@/lib/prisma";
 import { verifyApi, response } from "@/lib/api";
 
 import { checkRoom } from "../controller";
