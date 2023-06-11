@@ -25,14 +25,14 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   };
 }
 
-export async function authServer(type?: Role[]) {
+export async function authServer(role?: Role[]) {
   const session = await getServerSession(authOptions);
 
   if (!session) {
     redirect("/api/auth/signin");
   }
 
-  if (type && !type.includes(session.user.type)) {
+  if (role && !role.includes(session.user.type)) {
     notFound();
   }
 }

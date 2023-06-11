@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { Space, Table, Card } from "antd";
+import { Space, Table, Card, Popconfirm } from "antd";
 import type { ColumnsType } from "antd/es/table";
 
 import { useGetRoomQuery, useDeleteRoomMutation } from "@/app/room/service";
@@ -68,7 +68,7 @@ function makeColumns(
       render: renderTeacher,
     },
     {
-      title: "ปีการศึกษา",
+      title: "ชั้นการศึกษา",
       dataIndex: "year",
       key: "year",
       render: (value) => yearOption.find((item) => item.value === value)?.label,
@@ -79,7 +79,12 @@ function makeColumns(
       render: (_, record) => (
         <Space size="middle">
           <Link href={`/room/form/${record.id}`}>แก้ไข</Link>
-          <a onClick={() => handleDelete(record.id)}>ลบ</a>
+          <Popconfirm
+            title="ยืนยันการลบ"
+            onConfirm={() => handleDelete(record.id)}
+          >
+            <a>ลบ</a>
+          </Popconfirm>
         </Space>
       ),
     },

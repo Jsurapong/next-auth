@@ -11,7 +11,7 @@ export async function GET(
   try {
     const result = await department.getById(+params.id);
 
-    return new Response(JSON.stringify(result));
+    return response.get(JSON.stringify(result));
   } catch (error) {
     return response.error(JSON.stringify(error));
   }

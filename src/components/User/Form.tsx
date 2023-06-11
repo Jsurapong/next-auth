@@ -48,8 +48,10 @@ const FormApp: React.FC<FormAppProps> = ({
     method === "add" && form.resetFields();
   };
 
+  const title = method === "add" ? "เพิ่มผู้ใช้งาน" : "แก้ไขผู้ใช้งาน";
+
   return (
-    <Card title={<Link href="/user">กลับ</Link>} loading={loading}>
+    <Card title={title} loading={loading}>
       <Form
         {...layout}
         form={form}
@@ -88,6 +90,9 @@ const FormApp: React.FC<FormAppProps> = ({
 
         <Form.Item {...tailLayout}>
           <Space>
+            <Link href="/user">
+              <Button type="default">ยกเลิก</Button>
+            </Link>
             <Button type="primary" htmlType="submit" loading={submitting}>
               บันทึก
             </Button>

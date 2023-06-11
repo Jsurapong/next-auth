@@ -217,7 +217,7 @@ const Dashboard = () => {
   return (
     <>
       <Row gutter={[16, 16]}>
-        <Col sm={24} md={12}>
+        {/* <Col sm={24} md={12}>
           <Card title="อันดับห้อง">
             <Echarts option={data0} height={300} />
           </Card>
@@ -237,7 +237,7 @@ const Dashboard = () => {
             <Echarts option={data3} height={300} />
           </Card>
         </Col>
-        <Col sm={24} md={12}></Col>
+        <Col sm={24} md={12}></Col> */}
       </Row>
     </>
   );

@@ -6,6 +6,7 @@ import {
   NextAuthProvider,
   RootStyleRegistry,
   StoreProvider,
+  AntDProvider,
 } from "../components/Provider";
 // import AppBar from "@/components/AppBar";
 import LayoutAdmin from "@/components/Layout/Admin";
@@ -21,12 +22,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="th">
       <body>
         <RootStyleRegistry>
           <NextAuthProvider>
             <StoreProvider>
-              <LayoutAdmin>{children}</LayoutAdmin>
+              <AntDProvider>
+                <LayoutAdmin>{children}</LayoutAdmin>
+              </AntDProvider>
             </StoreProvider>
           </NextAuthProvider>
         </RootStyleRegistry>

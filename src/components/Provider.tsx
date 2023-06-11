@@ -6,6 +6,7 @@ import { createCache, extractStyle, StyleProvider } from "@ant-design/cssinjs";
 
 import { SessionProvider } from "next-auth/react";
 import { ConfigProvider } from "antd";
+import th_TH from "antd/locale/th_TH";
 
 import store from "@/store";
 import { Provider } from "react-redux";
@@ -19,7 +20,7 @@ export const NextAuthProvider = ({ children }: Props) => {
 };
 
 export const AntDProvider = ({ children }: Props) => {
-  return <ConfigProvider>{children}</ConfigProvider>;
+  return <ConfigProvider locale={th_TH}>{children}</ConfigProvider>;
 };
 
 export const RootStyleRegistry = ({ children }: PropsWithChildren) => {

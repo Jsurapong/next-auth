@@ -1,0 +1,10 @@
+import { authServer } from "@/lib/auth";
+import { Role } from "@/lib/types/role";
+
+import Form from "@/components/CheckList/UpdateForm";
+
+export default async function Page() {
+  await authServer([Role.Admin, Role.Student, Role.TeacherL1, Role.TeacherL2]);
+
+  return <Form />;
+}

@@ -18,8 +18,6 @@ export async function POST(request: Request) {
 
     const accessToken = signJwtAccessToken(userWithoutPass);
 
-    console.log({ accessToken });
-
     const result = { ...userWithoutPass, accessToken };
 
     return new Response(JSON.stringify(result));
