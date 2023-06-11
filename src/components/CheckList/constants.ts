@@ -14,3 +14,8 @@ export const TermOption = [
   { label: "1", value: 1 },
   { label: "2", value: 2 },
 ];
+
+export const AppStatus = [
+  { label: "ตรวจสอบแล้ว", value: true },
+  { label: "รอตรวจสอบ", value: false },
+];

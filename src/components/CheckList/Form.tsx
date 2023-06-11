@@ -27,6 +27,7 @@ import {
   StatusOption,
   TermOption,
   TimeOption,
+  AppStatus,
 } from "@/components/CheckList/constants";
 
 import { yearOption } from "../Room/constants";
@@ -134,7 +135,7 @@ const FormApp: React.FC<FormAppProps> = ({
         }}
       >
         <Form.Item name="isPass" label="สำหรับครูปกครอง">
-          <Select disabled={!canEditIsPass} options={StatusOption} />
+          <Select disabled={!canEditIsPass} options={AppStatus} />
         </Form.Item>
         <Form.Item name="date" label="วันที่ตรวจ" rules={[{ required: true }]}>
           <DatePicker

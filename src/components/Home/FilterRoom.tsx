@@ -19,7 +19,12 @@ const FilterRoom: React.FC<{
   const type = session?.user.type;
 
   const options = data
-    ?.filter((item) => item.teacherId === userId || type === Role.Admin)
+    ?.filter(
+      (item) =>
+        item.teacherId === userId ||
+        type === Role.Admin ||
+        type === Role.TeacherL1
+    )
     ?.map((item) => {
       const name = item.name;
       const year = yearOption?.find((y) => y.value === item.year)?.label;
@@ -34,14 +39,13 @@ const FilterRoom: React.FC<{
     (value: number | undefined) => {
       onChange(value);
       setSelected(value);
-      console.log({ value });
     },
     [onChange]
   );
 
   React.useEffect(() => {
     if (options && !selected) {
-      handleOnChange(options?.[0].value);
+      handleOnChange(options?.[0]?.value);
     }
   }, [handleOnChange, options, selected]);
 
