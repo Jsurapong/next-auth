@@ -11,6 +11,7 @@ import { useGetCheckRoomQuery } from "@/app/check-list/service";
 import type { ReturnCheckRooms } from "@/app/api/checkRoom/controller";
 
 import { StatusOption } from "@/components/CheckList/constants";
+import { yearOption } from "@/components/Room/constants";
 
 type DataType = ReturnCheckRooms[number];
 
@@ -63,7 +64,13 @@ function makeColumns(roomId: number): ColumnsType<DataType> {
           ?.format("YYYYMMDD")
           ?.localeCompare(dayjs(b.date)?.format("YYYYMMDD")),
     },
-
+    {
+      title: "ชั้นการศึกษา",
+      dataIndex: "year",
+      key: "year",
+      align: "center",
+      render: (v) => yearOption?.find((item) => item.value === v)?.label,
+    },
     {
       title: "เทอม",
       dataIndex: "term",

@@ -10,7 +10,7 @@ export async function GET(
   verifyApi(request); // use middleware
 
   try {
-    const result = await checkRoom.getById(+params.id);
+    const result = await checkRoom.getById(request, +params.id);
 
     return new Response(JSON.stringify(result));
   } catch (error) {
