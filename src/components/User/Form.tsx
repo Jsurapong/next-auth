@@ -68,15 +68,15 @@ const FormApp: React.FC<FormAppProps> = ({
         <Form.Item name="email" label="อีเมล" rules={[{ type: "email" }]}>
           <Input />
         </Form.Item>
-        {method === "add" && (
-          <Form.Item
-            name="password"
-            label="รหัสผ่าน"
-            rules={[{ required: true }]}
-          >
-            <Input.Password />
-          </Form.Item>
-        )}
+
+        <Form.Item
+          name="password"
+          label="รหัสผ่าน"
+          rules={[{ required: method === "add" }]}
+        >
+          <Input.Password />
+        </Form.Item>
+
         <Form.Item name="f_name" label="ชื่อ" rules={[{ required: true }]}>
           <Input />
         </Form.Item>

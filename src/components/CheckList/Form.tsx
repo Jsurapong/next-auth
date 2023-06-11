@@ -46,7 +46,7 @@ export type Values = {
   time: number;
   date: string;
   isPass: boolean;
-  checkStudent: { userId: number; isPass: boolean }[];
+  checkStudent: { userId: number; isPass: boolean; remark?: string }[];
   year: number;
 };
 
@@ -96,15 +96,22 @@ const FormApp: React.FC<FormAppProps> = ({
 
   // initialValues checkStudent to Object for lookup
   const initCheckObject = initialValues?.checkStudent?.reduce(
-    (obj, item) => ({ ...obj, [item.userId]: item.isPass }),
+    (obj, item) => ({
+      ...obj,
+      [item.userId]: { isPass: item.isPass, remark: item?.remark },
+    }),
     {}
-  ) as { [key: number]: boolean }[];
+  ) as {
+    remark: any;
+    isPass: any;
+  }[];
 
   // base student list
   const checkStudent = data?.user?.map((item) => ({
     userId: item.id,
     name: item.f_name + " " + item.l_name,
-    isPass: initCheckObject?.[item.id],
+    isPass: initCheckObject?.[item.id]?.isPass,
+    remark: initCheckObject?.[item.id]?.remark,
   }));
 
   const date = initialValues?.date ? dayjs(initialValues?.date) : undefined;
@@ -221,6 +228,24 @@ const FormApp: React.FC<FormAppProps> = ({
                             style={{ width: "200px" }}
                             options={StatusOption}
                           ></Select>
+                        </Form.Item>
+                      </>
+                    );
+                  },
+                },
+                {
+                  title: "หมายเหตุ",
+                  key: "name",
+                  dataIndex: "name",
+                  render: (value, _, index) => {
+                    return (
+                      <>
+                        <Form.Item
+                          noStyle
+                          name={["checkStudent", index, "remark"]}
+                          label=""
+                        >
+                          <Input />
                         </Form.Item>
                       </>
                     );

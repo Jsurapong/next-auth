@@ -35,6 +35,7 @@ const FormCreate: React.FC = () => {
     checkStudent: data?.checkStudent?.map((item) => ({
       userId: item?.user.id,
       isPass: item?.isPass,
+      remark: item?.remark ?? undefined,
     })),
   };
 

@@ -22,7 +22,7 @@ export type RequestBodyCreate = {
   isPass: boolean;
   roomId: number;
   year: number;
-  checkStudent: { userId: number; isPass: boolean }[];
+  checkStudent: { userId: number; isPass: boolean; remark?: string }[];
 };
 export type RequestBodyUpdate = Omit<RequestBodyCreate, "id" | "year">;
 
@@ -44,6 +44,7 @@ const select_include = Prisma.validator<Prisma.CheckRoomArgs>()({
         },
         isPass: true,
         id: true,
+        remark: true,
       },
     },
   },
@@ -76,6 +77,7 @@ async function getById(request: Request, id: number) {
     where = { roomId };
   }
 
+  console.log("dd");
   const result = await prisma.checkRoom.findFirst({
     where: { id: +id, ...where },
     ...select_include,
@@ -99,6 +101,7 @@ async function create(request: Request) {
           data: body?.checkStudent?.map((item) => ({
             userId: item.userId,
             isPass: item.isPass,
+            remark: item?.remark ?? null,
           })),
         },
       },
@@ -120,14 +123,19 @@ async function update(request: Request, id: number) {
       isPass: body?.isPass,
       roomId: body?.roomId,
       checkStudent: {
-        update: body?.checkStudent?.map((item) => ({
+        upsert: body?.checkStudent?.map((item) => ({
           where: {
             checkRoomId_userId: {
               checkRoomId: +id,
               userId: item.userId,
             },
           },
-          data: { isPass: item.isPass },
+          update: { isPass: item.isPass, remark: item?.remark ?? null },
+          create: {
+            isPass: item.isPass,
+            userId: item.userId,
+            remark: item?.remark ?? null,
+          },
         })),
       },
     },
