@@ -18,6 +18,11 @@ const Menus = [
     roles: [Role.Admin, Role.TeacherL1, Role.TeacherL2, Role.Student],
   },
   {
+    title: "รายงาน",
+    path: "/report",
+    roles: [Role.Admin, Role.TeacherL1],
+  },
+  {
     title: "จัดการผู้ใช้งาน",
     path: "/user",
     roles: [Role.Admin],

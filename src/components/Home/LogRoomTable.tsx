@@ -31,7 +31,6 @@ const LogRoomTable: React.FC<{ roomId: number }> = ({ roomId }) => {
         columns={makeColumns(roomId)}
         rowKey={"id"}
         dataSource={newData}
-        pagination={false}
       />
     </Card>
   );

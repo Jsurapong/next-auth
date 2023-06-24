@@ -172,8 +172,12 @@ const FormApp: React.FC<FormAppProps> = ({
             ({ getFieldValue }) => ({
               validator(_, value) {
                 const selectTerm = getFieldValue("term");
+                const selectYear = getFieldValue("year");
                 const isNotDuplicateTerm = !checkListData?.find(
-                  (item) => item.term === selectTerm && item.time === value
+                  (item) =>
+                    item.term === selectTerm &&
+                    item.time === value &&
+                    item.year === selectYear
                 );
 
                 if (!value || isNotDuplicateTerm || method === "update") {
